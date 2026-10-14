@@ -1,0 +1,1858 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="SPeditor wiki: the poster, scene and animation studio for Garry's Mod. Every window, tool and hotkey with screenshots, in English and Russian.">
+<style>img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
+<title>SPeditor Wiki</title>
+<link rel="icon" type="image/png" href="img/icon128.png">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a wiki in the manner of wiki.facepunch.com — a deep-blue navigation rail on the left,
+   a white reading column on the right, blue headings and rules, key caps and callout boxes. */
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f2f6fb;
+  --fg: #16202c;
+  --fg-dim: #56657a;
+  --rule: #d6e0ec;
+  --accent: #1667c4;
+  --accent-ink: #0f4f99;
+  --accent-soft: #e6f0fb;
+  --rail: #0e2a4d;
+  --rail-fg: #d7e4f4;
+  --rail-dim: #8fa8c7;
+  --rail-hover: #163a66;
+  --rail-active: #1f5fae;
+  --warn: #b25a00;
+  --warn-soft: #fff4e5;
+  --ok: #1d7a43;
+  --ok-soft: #e8f6ee;
+  --kbd-bg: #ffffff;
+  --kbd-edge: #b9c7d8;
+  --shadow: 0 1px 2px rgba(14, 42, 77, .08), 0 4px 16px rgba(14, 42, 77, .06);
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+  --top-h: 52px;
+  --rail-w: 270px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1722; --bg-soft: #152131; --fg: #e3eaf3; --fg-dim: #97a7bb; --rule: #26364a;
+    --accent: #5aa2f0; --accent-ink: #8cc0ff; --accent-soft: #15304f;
+    --rail: #0a1422; --rail-fg: #cbd9ea; --rail-dim: #7890ad; --rail-hover: #13253c; --rail-active: #1b4b86;
+    --warn: #f0a24a; --warn-soft: #2e2213; --ok: #5cc98a; --ok-soft: #12291c;
+    --kbd-bg: #1b2a3d; --kbd-edge: #3a506b; --shadow: 0 1px 2px rgba(0,0,0,.4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1722; --bg-soft: #152131; --fg: #e3eaf3; --fg-dim: #97a7bb; --rule: #26364a;
+  --accent: #5aa2f0; --accent-ink: #8cc0ff; --accent-soft: #15304f;
+  --rail: #0a1422; --rail-fg: #cbd9ea; --rail-dim: #7890ad; --rail-hover: #13253c; --rail-active: #1b4b86;
+  --warn: #f0a24a; --warn-soft: #2e2213; --ok: #5cc98a; --ok-soft: #12291c;
+  --kbd-bg: #1b2a3d; --kbd-edge: #3a506b; --shadow: 0 1px 2px rgba(0,0,0,.4);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.62 var(--font-body); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* language switch: everything is written twice */
+html[data-lang="en"] .l-ru, html[data-lang="ru"] .l-en { display: none !important; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  height: var(--top-h); display: flex; align-items: center; gap: 14px;
+  background: var(--rail); color: #fff; border-bottom: 3px solid var(--accent);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.brand { display: flex; align-items: center; gap: 10px; color: #fff; font: 600 20px/1 var(--font-display); letter-spacing: .01em; white-space: nowrap; }
+.brand:hover { text-decoration: none; }
+.brand .reel { width: 34px; height: 34px; flex: none; }
+.brand small { font: 500 12px/1 var(--font-body); color: var(--rail-dim); letter-spacing: .06em; text-transform: uppercase; }
+.topbar .spacer { flex: 1; }
+.search { position: relative; width: min(340px, 40vw); }
+.search input {
+  width: 100%; height: 34px; border-radius: 4px; border: 1px solid #2b4a73; padding: 0 12px 0 32px;
+  background: #0a2140; color: #fff; font: 14px var(--font-body);
+}
+.search input::placeholder { color: var(--rail-dim); }
+.search svg { position: absolute; left: 10px; top: 9px; width: 16px; height: 16px; fill: var(--rail-dim); }
+.results {
+  position: absolute; top: 40px; right: 0; width: min(460px, 92vw); max-height: 70vh; overflow: auto;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 6px;
+}
+.results button { display: block; width: 100%; text-align: left; border: 0; background: none; color: inherit; padding: 8px 10px; border-radius: 4px; cursor: pointer; font: inherit; }
+.results button:hover, .results button:focus-visible { background: var(--accent-soft); }
+.results b { display: block; font-weight: 600; color: var(--accent-ink); }
+.results span { font-size: 13px; color: var(--fg-dim); }
+.results .none { padding: 10px; color: var(--fg-dim); font-size: 14px; }
+.seg { display: flex; border: 1px solid #2b4a73; border-radius: 4px; overflow: hidden; flex: none; }
+.seg button { border: 0; background: transparent; color: var(--rail-fg); font: 600 13px var(--font-body); padding: 6px 10px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.menu-btn { display: none; border: 1px solid #2b4a73; background: transparent; color: #fff; border-radius: 4px; height: 34px; width: 38px; cursor: pointer; }
+.menu-btn svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; }
+
+/* ---------- rail ---------- */
+.shell { display: grid; grid-template-columns: var(--rail-w) minmax(0, 1fr); min-height: calc(100vh - var(--top-h)); }
+.rail {
+  background: var(--rail); color: var(--rail-fg); padding: 14px 0 40px;
+  position: sticky; top: calc(var(--top-h) + env(safe-area-inset-top, 0px)); height: calc(100vh - var(--top-h) - env(safe-area-inset-top, 0px)); overflow-y: auto;
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.rail h4 { margin: 18px 18px 6px; font: 600 11px/1.2 var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--rail-dim); }
+.rail a { display: block; color: var(--rail-fg); padding: 6px 18px 6px 22px; font-size: 14.5px; line-height: 1.3; border-left: 3px solid transparent; }
+.rail a:hover { background: var(--rail-hover); text-decoration: none; }
+.rail a[aria-current="page"] { background: var(--rail-active); border-left-color: #7fb6ff; color: #fff; font-weight: 500; }
+.rail .ver { margin: 26px 18px 0; font-size: 12px; color: var(--rail-dim); }
+
+/* ---------- content ---------- */
+main { min-width: 0; padding-block: 26px 80px; padding-left: max(16px, min(5vw, 56px)); padding-right: max(16px, env(safe-area-inset-right, 0px), min(5vw, 56px)); }
+.page { display: none; max-width: 940px; }
+.page.on { display: block; }
+.crumbs { font-size: 13px; color: var(--fg-dim); margin-bottom: 4px; }
+.crumbs a { color: var(--fg-dim); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; color: var(--fg); }
+h1 { font-size: 38px; line-height: 1.15; margin: 0 0 8px; font-weight: 700; }
+.lede { font-size: 18.5px; color: var(--fg-dim); margin: 0 0 22px; max-width: 68ch; }
+h2 { font-size: 26px; line-height: 1.2; margin: 38px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--rule); font-weight: 600; }
+h3 { font-size: 20px; margin: 26px 0 6px; font-weight: 600; color: var(--accent-ink); }
+p, li { max-width: 72ch; }
+p { margin: 0 0 12px; }
+ul, ol { padding-left: 24px; margin: 0 0 14px; }
+li { margin: 3px 0; }
+li::marker { color: var(--accent); }
+strong { font-weight: 600; }
+code, .path {
+  font-family: var(--font-mono); font-size: .88em; background: var(--bg-soft); border: 1px solid var(--rule);
+  border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere;
+}
+pre { font-family: var(--font-mono); font-size: 14px; background: var(--bg-soft); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 4px; padding: 12px 14px; overflow-x: auto; }
+kbd {
+  display: inline-block; min-width: 1.7em; text-align: center; font: 600 .82em/1.5 var(--font-mono);
+  padding: 0 6px; border: 1px solid var(--kbd-edge); border-bottom-width: 3px; border-radius: 4px;
+  background: var(--kbd-bg); color: var(--fg); white-space: nowrap;
+}
+.ui { font-weight: 600; color: var(--accent-ink); white-space: nowrap; }
+.ui::before { content: "▸ "; color: var(--fg-dim); font-weight: 400; }
+.ui.plain::before { content: ""; }
+
+/* callouts as on the GMod wiki */
+.note, .warn, .tip { border-radius: 4px; padding: 10px 14px 10px 44px; margin: 14px 0 18px; position: relative; max-width: 72ch; font-size: 15.5px; }
+.note { background: var(--accent-soft); border-left: 4px solid var(--accent); }
+.warn { background: var(--warn-soft); border-left: 4px solid var(--warn); }
+.tip { background: var(--ok-soft); border-left: 4px solid var(--ok); }
+.note::before, .warn::before, .tip::before { position: absolute; left: 13px; top: 9px; font: 700 15px/1.6 var(--font-display); width: 20px; height: 20px; border-radius: 50%; text-align: center; line-height: 20px; color: #fff; }
+.note::before { content: "i"; background: var(--accent); }
+.warn::before { content: "!"; background: var(--warn); }
+.tip::before { content: "✓"; background: var(--ok); font-size: 12px; }
+.note p:last-child, .warn p:last-child, .tip p:last-child { margin: 0; }
+
+figure { margin: 16px 0 22px; }
+figure img { display: block; max-width: min(100%, var(--w, 100%)); height: auto; border: 1px solid var(--rule); border-radius: 4px; box-shadow: var(--shadow); cursor: zoom-in; background: #1d1d1d; }
+figure.small img { max-width: min(100%, 420px); }
+figure.mid img { max-width: min(100%, 640px); }
+figcaption { font-size: 13.5px; color: var(--fg-dim); margin-top: 7px; max-width: 72ch; }
+figcaption b { color: var(--fg); font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.row > figure { margin: 0; flex: 1 1 200px; min-width: 0; }
+.row > figure.fit { flex: 0 1 auto; }
+.row > * { min-width: 0; max-width: 100%; }
+
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+.tbl { overflow-x: auto; margin: 12px 0 20px; border: 1px solid var(--rule); border-radius: 4px; }
+th, td { text-align: left; padding: 7px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { background: var(--bg-soft); font: 600 13px var(--font-body); letter-spacing: .03em; text-transform: uppercase; color: var(--fg-dim); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { white-space: nowrap; }
+td.wrap { white-space: normal; }
+
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps > li { counter-increment: s; position: relative; padding: 2px 0 10px 46px; max-width: 76ch; }
+.steps > li::before {
+  content: counter(s); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); color: #fff; font: 700 15px/30px var(--font-display); text-align: center;
+}
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin-bottom: 8px; }
+.hero figure { margin: 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 12px; margin: 16px 0 24px; }
+.card {
+  display: block; border: 1px solid var(--rule); border-top: 3px solid var(--accent); border-radius: 4px; padding: 12px 14px;
+  background: var(--bg); color: var(--fg);
+}
+.card:hover { text-decoration: none; border-color: var(--accent); background: var(--accent-soft); }
+.card b { display: block; font: 600 17px/1.25 var(--font-display); color: var(--accent-ink); margin-bottom: 3px; }
+.card span { font-size: 14px; color: var(--fg-dim); }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+.gallery figure { margin: 0; }
+.gallery img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 12px; }
+.themes figure { margin: 0; }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 16px; border-top: 2px solid var(--rule); flex-wrap: wrap; }
+.pager a { display: block; border: 1px solid var(--rule); border-radius: 4px; padding: 8px 14px; min-width: 0; max-width: 48%; }
+.pager a small { display: block; font-size: 12px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: .08em; }
+.pager a:hover { text-decoration: none; background: var(--accent-soft); }
+.pager .next { margin-left: auto; text-align: right; }
+.badge { display: inline-block; font: 600 11px/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; padding: 4px 7px; border-radius: 3px; background: var(--accent); color: #fff; vertical-align: middle; }
+.badge.new { background: var(--ok); }
+dl.defs { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; margin: 10px 0 18px; }
+dl.defs dt { font-weight: 600; color: var(--accent-ink); }
+dl.defs dd { margin: 0; }
+
+/* zoom */
+.zoom { position: fixed; inset: 0; z-index: 50; background: rgba(6, 14, 26, .9); display: flex; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+.zoom img { max-width: 100%; max-height: 100%; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,.6); }
+
+/* cover and contents exist only in the PDF */
+.cover, .toc { display: none; }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: fixed; z-index: 30; left: 0; top: calc(var(--top-h) + env(safe-area-inset-top, 0px)); width: min(86vw, 300px); transform: translateX(-102%); transition: transform .2s ease; box-shadow: 4px 0 24px rgba(0,0,0,.35); }
+  .rail.open { transform: none; }
+  .menu-btn { display: block; }
+  .brand small { display: none; }
+  .search { width: auto; flex: 1; }
+  .topbar .spacer { display: none; }
+  h1 { font-size: 30px; }
+  dl.defs { grid-template-columns: minmax(0, 1fr); }
+  dl.defs dd { margin-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .rail { transition: none; } }
+
+/* ---------- PDF (print mode) ---------- */
+html.print body { font-size: 11pt; }
+html.print .topbar, html.print .rail, html.print .pager, html.print .crumbs { display: none !important; }
+html.print .shell { display: block; }
+html.print main { padding: 0; }
+html.print .page { display: block; max-width: none; break-before: page; }
+html.print .cover, html.print .toc { display: block; }
+html.print figure { break-inside: avoid; }
+html.print figure img { box-shadow: none; max-height: 145mm; width: auto; }
+html.print .gallery img { max-height: 60mm; }
+html.print .note, html.print .warn, html.print .tip, html.print tr, html.print .card { break-inside: avoid; }
+html.print h2, html.print h3 { break-after: avoid; }
+html.print .cover { height: 250mm; display: flex; flex-direction: column; justify-content: space-between; padding: 30mm 6mm 10mm; border-top: 10mm solid var(--rail); }
+.cover h1 { font-size: 60pt; margin: 0; color: var(--rail); display: flex; align-items: center; gap: 6mm; }
+.cover h1 .cover-icon { width: 32mm; height: 32mm; border-radius: 0; }
+.cover .sub { font: 600 20pt/1.3 var(--font-display); color: var(--accent); margin: 6mm 0 12mm; }
+.cover img { width: 100%; border-radius: 3px; }
+.cover .meta { font-size: 11pt; color: var(--fg-dim); }
+.toc { break-before: page; }
+.toc ol { columns: 2; column-gap: 12mm; font-size: 11.5pt; }
+.toc li { break-inside: avoid; }
+@page { size: A4; margin: 14mm 14mm 16mm; }
+</style>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg></button>
+  <a class="brand" href="#home">
+    <img class="reel" src="img/icon128.png" alt="">
+    SPeditor <small>Wiki</small>
+  </a>
+  <span class="spacer"></span>
+  <div class="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 0 1 6.32 12.9l5.39 5.4-1.41 1.4-5.4-5.39A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
+    <input id="q" type="search" autocomplete="off" aria-label="Search">
+    <div class="results" id="results" hidden></div>
+  </div>
+  <div class="seg" role="group" aria-label="Language">
+    <button id="lang-en" data-lang="en">EN</button>
+    <button id="lang-ru" data-lang="ru">RU</button>
+  </div>
+</header>
+
+<div class="shell">
+<nav class="rail" id="rail" aria-label="Contents"></nav>
+<main id="main">
+
+<!-- PDF only: cover and contents -->
+<section class="cover">
+  <div>
+    <h1><img class="cover-icon" src="img/icon128.png" alt="">SPeditor</h1>
+    <div class="sub"><span class="l-en">The complete guide</span><span class="l-ru">Полное руководство</span></div>
+    <img src="img/01_overview.jpg" alt="">
+  </div>
+  <div class="meta">
+    <span class="l-en">Poster, scene and animation studio for Garry's Mod · version a0.4 · October 2026</span>
+    <span class="l-ru">Студия постеров, сцен и анимации для Garry's Mod · версия a0.4 · октябрь 2026</span><br>
+    steamcommunity.com/sharedfiles/filedetails/?id=3817852435
+  </div>
+</section>
+<section class="toc">
+  <h2><span class="l-en">Contents</span><span class="l-ru">Содержание</span></h2>
+  <ol id="toc"></ol>
+</section>
+
+<!-- ============================================================ HOME -->
+<section class="page" id="pg-home" data-group="start" data-en="Welcome" data-ru="Добро пожаловать">
+  <h1>SPeditor Wiki</h1>
+  <p class="lede l-en">SPeditor turns Garry's Mod into a small film studio: posters, still scenes and short animations, built on any map with the working habits of Source Filmmaker. This wiki explains every window, button and hotkey.</p>
+  <p class="lede l-ru">SPeditor превращает Garry's Mod в маленькую киностудию: постеры, статичные сцены и короткие анимации прямо на любой карте, с приёмами работы из Source Filmmaker. Здесь описано каждое окно, кнопка и сочетание клавиш.</p>
+
+  <div class="hero">
+    <figure>
+      <img src="img/01_overview.jpg" alt="SPeditor editor window">
+      <figcaption class="l-en"><b>The editor.</b> Animation Set Editor on the left, the Primary and Secondary viewports in the middle and on the right, the Scene / Shadows / Timeline panel at the bottom. The scene is the bundled example <code>shootout_construct</code>.</figcaption>
+      <figcaption class="l-ru"><b>Редактор.</b> Слева Animation Set Editor, в центре и справа Primary и Secondary Viewport, внизу панель Scene / Shadows / Timeline. Сцена — встроенный пример <code>shootout_construct</code>.</figcaption>
+    </figure>
+  </div>
+
+
+  <h2><span class="l-en">Download</span><span class="l-ru">Скачать</span></h2>
+  <div class="cards">
+    <a class="card" href="SPeditor_Guide_EN.pdf" download><b>PDF · English</b><span class="l-en">The whole wiki as one file.</span><span class="l-ru">Вся вики одним файлом.</span></a>
+    <a class="card" href="SPeditor_Guide_RU.pdf" download><b>PDF · Русский</b><span class="l-en">The same in Russian.</span><span class="l-ru">Вся вики одним файлом, по-русски.</span></a>
+    <a class="card" href="https://github.com/DikiyChuvak/SPeditor"><b>GitHub</b><span class="l-en">Source code, issues and releases.</span><span class="l-ru">Исходный код, баг-репорты и релизы.</span></a>
+    <a class="card" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3817852435"><b>Steam Workshop</b><span class="l-en">Subscribe to the addon.</span><span class="l-ru">Подписаться на аддон.</span></a>
+  </div>
+  <h2><span class="l-en">Where to start</span><span class="l-ru">С чего начать</span></h2>
+  <div class="cards">
+    <a class="card" href="#install"><b class="l-en">Installing and opening</b><b class="l-ru">Установка и запуск</b><span class="l-en">Subscribe, open the editor, server access.</span><span class="l-ru">Подписка, как открыть редактор, доступ на сервере.</span></a>
+    <a class="card" href="#first-poster"><b class="l-en">Your first poster</b><b class="l-ru">Первый постер</b><span class="l-en">From an empty map to a PNG in five steps.</span><span class="l-ru">От пустой карты до PNG за пять шагов.</span></a>
+    <a class="card" href="#workspace"><b class="l-en">The workspace</b><b class="l-ru">Рабочее пространство</b><span class="l-en">Windows, tabs, docking and layouts.</span><span class="l-ru">Окна, вкладки, стыковка и раскладки.</span></a>
+    <a class="card" href="#posing"><b class="l-en">Posing characters</b><b class="l-ru">Позы персонажей</b><span class="l-en">Gizmo, bones, IK, faces, pose library.</span><span class="l-ru">Гизмо, кости, IK, лица, библиотека поз.</span></a>
+    <a class="card" href="#lights"><b class="l-en">Lights</b><b class="l-ru">Свет</b><span class="l-en">Spot and point lights, 19 light kinds, soft shadows.</span><span class="l-ru">Прожекторы и точечный свет, 19 видов, мягкие тени.</span></a>
+    <a class="card" href="#render"><b class="l-en">Rendering</b><b class="l-ru">Рендер</b><span class="l-en">Up to 3840 px, depth of field, camera effects.</span><span class="l-ru">До 3840 px, глубина резкости, эффекты камеры.</span></a>
+    <a class="card" href="#sa-basics"><b class="l-en">Animation (SAeditor)</b><b class="l-ru">Анимация (SAeditor)</b><span class="l-en">Keys, timeline, imported animations, video.</span><span class="l-ru">Ключи, таймлайн, импорт анимаций, видео.</span></a>
+    <a class="card" href="#faq"><b class="l-en">Problems and answers</b><b class="l-ru">Проблемы и ответы</b><span class="l-en">The questions players ask most.</span><span class="l-ru">Самые частые вопросы игроков.</span></a>
+  </div>
+
+  <h2><span class="l-en">What SPeditor can do</span><span class="l-ru">Что умеет SPeditor</span></h2>
+  <ul class="l-en">
+    <li><strong>An SFM-like workspace:</strong> dockable windows, tabs you can drag out, saved layouts, eight interface themes.</li>
+    <li><strong>Two viewports</strong> with a frame gate, composition guides and fixed exposure; a free work camera and scene cameras you can look through.</li>
+    <li><strong>Posing:</strong> a gizmo for objects and for every single bone (fingers too), inverse kinematics, face flexes, eye target, skins and bodygroups, a pose library.</li>
+    <li><strong>Objects:</strong> colour and opacity, texture replacement, stretching, attaching a weapon to a hand, wearing clothing that bends with the body.</li>
+    <li><strong>Lights:</strong> point and spot lights, soft edges and penumbra, glow and a visible beam, light masks, 19 ready-made kinds, a three-point rig.</li>
+    <li><strong>Effects:</strong> explosions, fire, smoke, blood and sparks from the game and from Workshop addons, frozen at any moment.</li>
+    <li><strong>Render</strong> to PNG or JPEG up to 3840 px with smoothing, depth of field, soft shadows, camera effects and Workshop shaders.</li>
+    <li><strong>SAeditor:</strong> keyframe animation of everything in the scene, imported model animations, sounds and voices, video export.</li>
+    <li>Scenes, poses and layouts are saved; undo and redo for every edit; English and Russian interface; a mod system for authors.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Рабочее место как в SFM:</strong> стыкуемые окна, вкладки, которые можно вытащить, сохранённые раскладки, восемь тем интерфейса.</li>
+    <li><strong>Два вьюпорта</strong> с рамкой кадра, сетками композиции и фиксированной экспозицией; свободная рабочая камера и камеры сцены, через которые можно смотреть.</li>
+    <li><strong>Позирование:</strong> гизмо для объектов и для каждой кости (включая пальцы), инверсная кинематика, мимика, направление взгляда, скины и бодигруппы, библиотека поз.</li>
+    <li><strong>Объекты:</strong> цвет и прозрачность, замена текстур, растяжение, оружие в руке, одежда, которая гнётся вместе с телом.</li>
+    <li><strong>Свет:</strong> точечный свет и прожекторы, мягкий край и полутень, свечение и видимый луч, маски света, 19 готовых видов, трёхточечная схема.</li>
+    <li><strong>Эффекты:</strong> взрывы, огонь, дым, кровь и искры из игры и аддонов Workshop, остановленные в любой момент.</li>
+    <li><strong>Рендер</strong> в PNG или JPEG до 3840 px со сглаживанием, глубиной резкости, мягкими тенями, эффектами камеры и шейдерами Workshop.</li>
+    <li><strong>SAeditor:</strong> анимация ключевыми кадрами всего, что есть в сцене, импорт анимаций моделей, звуки и голоса, экспорт видео.</li>
+    <li>Сцены, позы и раскладки сохраняются; отмена и повтор любого действия; английский и русский интерфейс; система модов для авторов.</li>
+  </ul>
+
+  <h2><span class="l-en">Made with SPeditor</span><span class="l-ru">Сделано в SPeditor</span></h2>
+  <div class="gallery">
+    <figure><img src="img/gallery_poster_construct_sunset.jpg" alt="Poster: sunset on gm_construct"></figure>
+    <figure><img src="img/gallery_poster_construct_alyx_dog.jpg" alt="Poster: Alyx and Dog"></figure>
+    <figure><img src="img/gallery_poster_bigcity_gman.jpg" alt="Poster: G-Man in the night city"></figure>
+    <figure><img src="img/gallery_speditor_20261010_220526.jpg" alt="Render: G-Man and the GMod logo"></figure>
+  </div>
+  <div class="note l-en"><p>This wiki describes SPeditor <strong>a0.4</strong> (alpha); the changes of this version are marked <span class="badge new">new</span>. The screenshots show the English interface; switch the language in the top right corner of this page.</p></div>
+  <div class="note l-ru"><p>Описана версия SPeditor <strong>a0.4</strong> (альфа); изменения этой версии отмечены знаком <span class="badge new">new</span>. На скриншотах английский интерфейс; язык этой страницы переключается в правом верхнем углу.</p></div>
+</section>
+
+<!-- ============================================================ INSTALL -->
+<section class="page" id="pg-install" data-group="start" data-en="Installing and opening" data-ru="Установка и запуск">
+  <h1><span class="l-en">Installing and opening</span><span class="l-ru">Установка и запуск</span></h1>
+  <p class="lede l-en">SPeditor is a normal Workshop addon. It works in singleplayer and on servers, on any map.</p>
+  <p class="lede l-ru">SPeditor — обычный аддон из Workshop. Работает в одиночной игре и на серверах, на любой карте.</p>
+
+  <h2><span class="l-en">Installing</span><span class="l-ru">Установка</span></h2>
+  <ol class="steps l-en">
+    <li>Open the <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3817852435">SPeditor page in the Steam Workshop</a> and press <strong>Subscribe</strong>.</li>
+    <li>Start Garry's Mod (or restart it if it was running) and load any map. <code>gm_construct</code> and <code>gm_flatgrass</code> are good for a start.</li>
+    <li>Optional: subscribe to <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3542644649">GShader Library</a> if you want Workshop shaders in your renders (see <a href="#shaders">Shaders</a>).</li>
+  </ol>
+  <ol class="steps l-ru">
+    <li>Откройте <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3817852435">страницу SPeditor в Steam Workshop</a> и нажмите <strong>Подписаться</strong>.</li>
+    <li>Запустите Garry's Mod (или перезапустите, если он был открыт) и загрузите любую карту. Для начала хорошо подходят <code>gm_construct</code> и <code>gm_flatgrass</code>.</li>
+    <li>По желанию: подпишитесь на <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3542644649">GShader Library</a>, если нужны шейдеры из Workshop в рендерах (см. <a href="#shaders">Шейдеры</a>).</li>
+  </ol>
+
+  <h2><span class="l-en">Opening the editor</span><span class="l-ru">Как открыть редактор</span></h2>
+  <p class="l-en">There are three ways. All of them toggle: the same action closes the editor again.</p>
+  <p class="l-ru">Есть три способа. Все работают как переключатель: то же действие снова закрывает редактор.</p>
+  <dl class="defs l-en">
+    <dt>C menu</dt><dd>Hold <kbd>C</kbd> and click the <strong>SPeditor</strong> icon on the desktop of the context menu.</dd>
+    <dt>Q menu</dt><dd>Hold <kbd>Q</kbd>, open the <strong>SPeditor</strong> tab on the right, the <strong>SPeditor</strong> item, then <strong>Toggle editor</strong>.</dd>
+    <dt>Console</dt><dd>Type <code>speditor_toggle</code>. Bind it to a key to open the editor in one press: <code>bind f6 speditor_toggle</code>.</dd>
+  </dl>
+  <dl class="defs l-ru">
+    <dt>Меню C</dt><dd>Зажмите <kbd>C</kbd> и нажмите значок <strong>SPeditor</strong> на рабочем столе контекстного меню.</dd>
+    <dt>Меню Q</dt><dd>Зажмите <kbd>Q</kbd>, откройте вкладку <strong>SPeditor</strong> справа, пункт <strong>SPeditor</strong>, затем <strong>Toggle editor</strong>.</dd>
+    <dt>Консоль</dt><dd>Введите <code>speditor_toggle</code>. Чтобы открывать редактор одной клавишей, привяжите команду: <code>bind f6 speditor_toggle</code>.</dd>
+  </dl>
+  <figure class="mid">
+    <img src="img/46_qmenu.jpg" alt="SPeditor tab in the Q menu">
+    <figcaption class="l-en"><b>Q menu → SPeditor.</b> The <strong>Language</strong> and <strong>Theme</strong> items next to it choose the interface language and look.</figcaption>
+    <figcaption class="l-ru"><b>Меню Q → SPeditor.</b> Соседние пункты <strong>Language</strong> и <strong>Theme</strong> выбирают язык и оформление интерфейса.</figcaption>
+  </figure>
+  <p class="l-en">To leave the editor press <span class="ui">Exit Editor</span> in the top right corner, use <span class="ui">File → Exit Editor</span>, or run <code>speditor_toggle</code> again. Your scene stays on the map.</p>
+  <p class="l-ru">Чтобы выйти, нажмите <span class="ui">Exit Editor</span> в правом верхнем углу, <span class="ui">File → Exit Editor</span> или снова выполните <code>speditor_toggle</code>. Сцена остаётся на карте.</p>
+
+  <h2><span class="l-en">Interface language</span><span class="l-ru">Язык интерфейса</span></h2>
+  <p class="l-en">Q menu → SPeditor → <strong>Language</strong>, or the console: <code>speditor_language en</code> / <code>speditor_language ru</code>. The language is applied the next time the editor is opened.</p>
+  <p class="l-ru">Меню Q → SPeditor → <strong>Language</strong> или консоль: <code>speditor_language ru</code> / <code>speditor_language en</code>. Язык применяется при следующем открытии редактора.</p>
+
+  <h2><span class="l-en">On a server</span><span class="l-ru">На сервере</span></h2>
+  <p class="l-en">By default only admins may use the editor on a server. The server owner changes this with <code>speditor_access</code>:</p>
+  <p class="l-ru">По умолчанию на сервере редактором пользуются только админы. Владелец сервера меняет это командой <code>speditor_access</code>:</p>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Value</span><span class="l-ru">Значение</span></th><th><span class="l-en">Who may open the editor</span><span class="l-ru">Кто может открыть редактор</span></th></tr>
+    <tr><td><code>admin</code></td><td class="wrap"><span class="l-en">Admins and superadmins (default)</span><span class="l-ru">Админы и суперадмины (по умолчанию)</span></td></tr>
+    <tr><td><code>superadmin</code></td><td class="wrap"><span class="l-en">Superadmins only</span><span class="l-ru">Только суперадмины</span></td></tr>
+    <tr><td><code>all</code></td><td class="wrap"><span class="l-en">Every player</span><span class="l-ru">Все игроки</span></td></tr>
+  </table></div>
+  <p class="l-en">Each player has a limit of models, lights, cameras and effects. A player without access sees the message “You do not have access to SPeditor on this server”.</p>
+  <p class="l-ru">У каждого игрока есть лимит моделей, источников света, камер и эффектов. Игрок без доступа видит сообщение «У вас нет доступа к SPeditor на этом сервере».</p>
+
+  <h2><span class="l-en">Where your files are</span><span class="l-ru">Где лежат ваши файлы</span></h2>
+  <p class="l-en">Everything SPeditor saves is in <code>garrysmod/data/speditor/</code>:</p>
+  <p class="l-ru">Всё, что сохраняет SPeditor, лежит в <code>garrysmod/data/speditor/</code>:</p>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Folder</span><span class="l-ru">Папка</span></th><th><span class="l-en">Contents</span><span class="l-ru">Содержимое</span></th></tr>
+    <tr><td><code>renders/</code></td><td class="wrap"><span class="l-en">Pictures, frame sequences and videos you rendered</span><span class="l-ru">Снятые картинки, последовательности кадров и видео</span></td></tr>
+    <tr><td><code>scenes/&lt;SteamID&gt;/</code></td><td class="wrap"><span class="l-en">Saved scenes and autosaves (on a server they are kept on the server)</span><span class="l-ru">Сохранённые сцены и автосохранения (на сервере — на стороне сервера)</span></td></tr>
+    <tr><td><code>poses/</code></td><td class="wrap"><span class="l-en">The pose library</span><span class="l-ru">Библиотека поз</span></td></tr>
+    <tr><td><code>layouts/</code></td><td class="wrap"><span class="l-en">Window layouts; <code>_last.json</code> is the layout at the moment you closed the editor</span><span class="l-ru">Раскладки окон; <code>_last.json</code> — раскладка в момент закрытия редактора</span></td></tr>
+    <tr><td><code>sounds/</code></td><td class="wrap"><span class="l-en">Your own WAV, MP3 and OGG files for SAeditor</span><span class="l-ru">Ваши файлы WAV, MP3 и OGG для SAeditor</span></td></tr>
+    <tr><td><code>windows.json</code></td><td class="wrap"><span class="l-en">Window properties such as “Always on top”</span><span class="l-ru">Свойства окон, например «Всегда сверху»</span></td></tr>
+  </table></div>
+  <div class="warn l-en"><p>Garry's Mod lets addons write only a few file types. Videos are therefore saved as <code>name.avi.dat</code>: remove <code>.dat</code> from the name and it is a regular AVI file.</p></div>
+  <div class="warn l-ru"><p>Garry's Mod разрешает аддонам записывать только несколько типов файлов. Поэтому видео сохраняется как <code>имя.avi.dat</code>: уберите из имени <code>.dat</code>, и это обычный AVI.</p></div>
+</section>
+
+<!-- ============================================================ FIRST POSTER -->
+<section class="page" id="pg-first-poster" data-group="start" data-en="Your first poster" data-ru="Первый постер">
+  <h1><span class="l-en">Your first poster in five steps</span><span class="l-ru">Первый постер за пять шагов</span></h1>
+  <p class="lede l-en">A short walk through the whole workflow. Every step links to the page that explains it in detail.</p>
+  <p class="lede l-ru">Короткий проход по всему процессу. Каждый шаг ведёт на страницу с подробностями.</p>
+
+  <ol class="steps l-en">
+    <li><strong>Add a character.</strong> Press <span class="ui plain">+</span> at the top of the Animation Set Editor and choose <span class="ui">Model…</span>. Find a model in the <a href="#objects">Model Browser</a> (for example <code>alyx</code>) and double-click it. It appears in front of the work camera.</li>
+    <li><strong>Pose it.</strong> Click the model in the viewport. Press <kbd>1</kbd> to move, <kbd>2</kbd> to rotate. Click a bone marker (a small cube on a joint) to pose a single bone; press <kbd>I</kbd> for inverse kinematics and drag a hand. See <a href="#posing">Posing</a>.</li>
+    <li><strong>Light it.</strong> <span class="ui plain">+</span> → <span class="ui">Soft light</span> → <span class="ui">Softbox</span> for the key light, then a <span class="ui">Rim light</span> behind the character. Or select the model and use <span class="ui">Create 3-point light rig</span>. See <a href="#lights">Lights</a>.</li>
+    <li><strong>Frame it.</strong> Fly the work camera to a good view (hold <kbd>RMB</kbd> and use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>), then <span class="ui plain">+</span> → <span class="ui">Spawn Camera</span>. The camera is created exactly where you look. Choose a frame aspect such as <span class="ui">2:3 (poster)</span> in the <span class="ui">View → Frame aspect</span> menu. See <a href="#cameras">Cameras</a>.</li>
+    <li><strong>Render.</strong> Press <span class="ui">Render</span> in the top right corner, pick your camera, the size (up to 3840 px) and the format, and press <span class="ui">Render</span>. The file appears in <code>garrysmod/data/speditor/renders/</code>. See <a href="#render">Rendering</a>.</li>
+  </ol>
+  <ol class="steps l-ru">
+    <li><strong>Добавьте персонажа.</strong> Нажмите <span class="ui plain">+</span> вверху Animation Set Editor и выберите <span class="ui">Model…</span>. Найдите модель в <a href="#objects">браузере моделей</a> (например, <code>alyx</code>) и дважды щёлкните по ней. Она появится перед рабочей камерой.</li>
+    <li><strong>Поставьте позу.</strong> Щёлкните по модели во вьюпорте. <kbd>1</kbd> — перемещение, <kbd>2</kbd> — вращение. Щёлкните по маркеру кости (маленький кубик на суставе), чтобы двигать одну кость; <kbd>I</kbd> включает инверсную кинематику — тяните за кисть. См. <a href="#posing">Позы</a>.</li>
+    <li><strong>Поставьте свет.</strong> <span class="ui plain">+</span> → <span class="ui">Soft light</span> → <span class="ui">Softbox</span> для основного света, затем <span class="ui">Rim light</span> позади персонажа. Или выделите модель и выберите <span class="ui">Create 3-point light rig</span>. См. <a href="#lights">Свет</a>.</li>
+    <li><strong>Выберите кадр.</strong> Подлетите рабочей камерой к удачному ракурсу (зажмите <kbd>ПКМ</kbd> и используйте <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>), затем <span class="ui plain">+</span> → <span class="ui">Spawn Camera</span>: камера создаётся ровно там, куда вы смотрите. Выберите пропорции кадра, например <span class="ui">2:3 (poster)</span>, в меню <span class="ui">View → Frame aspect</span>. См. <a href="#cameras">Камеры</a>.</li>
+    <li><strong>Отрендерите.</strong> Нажмите <span class="ui">Render</span> в правом верхнем углу, выберите камеру, размер (до 3840 px) и формат и нажмите <span class="ui">Render</span>. Файл появится в <code>garrysmod/data/speditor/renders/</code>. См. <a href="#render">Рендер</a>.</li>
+  </ol>
+  <figure>
+    <img src="img/40_lights_overview.jpg" alt="A lit scene with a scene camera">
+    <figcaption class="l-en"><b>The result of steps 1–4.</b> Left: the work camera shows the light cones and the selected softbox with its gizmo. Right: the Secondary Viewport looks through the scene camera — this is what the render will show.</figcaption>
+    <figcaption class="l-ru"><b>Результат шагов 1–4.</b> Слева рабочая камера показывает конусы света и выделенный софтбокс с гизмо. Справа Secondary Viewport смотрит через камеру сцены — так будет выглядеть рендер.</figcaption>
+  </figure>
+  <div class="tip l-en"><p>Save often: <span class="ui">File → Save Scene…</span>. A scene keeps the objects, the poses, the lights, the camera effects, the frame settings and the animation. Switch on <span class="ui">Autosave scene</span> in the same menu for a backup every 2.5 minutes.</p></div>
+  <div class="tip l-ru"><p>Сохраняйтесь чаще: <span class="ui">File → Save Scene…</span>. Сцена хранит объекты, позы, свет, эффекты камеры, настройки кадра и анимацию. Включите <span class="ui">Autosave scene</span> в том же меню — резервная копия каждые 2,5 минуты.</p></div>
+  <div class="note l-en"><p>Want to see a finished scene first? Open the <strong>Scene</strong> tab at the bottom and load <code>shootout_construct</code> (on the map gm_construct). It is an animated shootout with effects and sounds that comes with the addon.</p></div>
+  <div class="note l-ru"><p>Хотите сначала посмотреть готовую сцену? Откройте вкладку <strong>Scene</strong> внизу и загрузите <code>shootout_construct</code> (карта gm_construct). Это анимированная перестрелка с эффектами и звуками, которая идёт вместе с аддоном.</p></div>
+</section>
+
+<!-- ============================================================ WORKSPACE -->
+<section class="page" id="pg-workspace" data-group="ui" data-en="The workspace" data-ru="Рабочее пространство">
+  <h1><span class="l-en">The workspace</span><span class="l-ru">Рабочее пространство</span></h1>
+  <p class="lede l-en">The editor covers the screen with dockable windows, like Source Filmmaker. Each window holds one or more tabs; tabs can be moved between windows or torn off into a window of their own.</p>
+  <p class="lede l-ru">Редактор заполняет экран стыкуемыми окнами, как Source Filmmaker. В каждом окне одна или несколько вкладок; вкладки можно переносить между окнами или вытаскивать в отдельное окно.</p>
+  <figure>
+    <img src="img/01_overview.jpg" alt="Default layout">
+    <figcaption class="l-en"><b>The default layout (“SFM default”).</b></figcaption>
+    <figcaption class="l-ru"><b>Стандартная раскладка («SFM default»).</b></figcaption>
+  </figure>
+
+  <h2><span class="l-en">Parts of the screen</span><span class="l-ru">Части экрана</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Part</span><span class="l-ru">Часть</span></th><th><span class="l-en">What it is for</span><span class="l-ru">Для чего</span></th></tr>
+    <tr><td><span class="l-en">Menu bar</span><span class="l-ru">Строка меню</span></td><td class="wrap"><span class="l-en"><strong>File, Edit, Windows, View, Help</strong> on the left; <strong>Render</strong> and <strong>Exit Editor</strong> on the right.</span><span class="l-ru"><strong>File, Edit, Windows, View, Help</strong> слева; <strong>Render</strong> и <strong>Exit Editor</strong> справа.</span></td></tr>
+    <tr><td>Animation Set Editor</td><td class="wrap"><span class="l-en">The object tree and the controls of the selected object: bones, face, eyes, light and camera settings. See <a href="#objects">Objects</a>.</span><span class="l-ru">Дерево объектов и управление выделенным объектом: кости, лицо, глаза, настройки света и камеры. См. <a href="#objects">Объекты</a>.</span></td></tr>
+    <tr><td>Element Viewer</td><td class="wrap"><span class="l-en">Every property of the selected object as a list of numbers you can type in.</span><span class="l-ru">Все свойства выделенного объекта списком чисел, которые можно вводить вручную.</span></td></tr>
+    <tr><td>Primary Viewport</td><td class="wrap"><span class="l-en">The main 3D view where you select and edit. Shows the work camera or a scene camera.</span><span class="l-ru">Главный 3D-вид, где вы выделяете и редактируете. Показывает рабочую камеру или камеру сцены.</span></td></tr>
+    <tr><td>Secondary Viewport</td><td class="wrap"><span class="l-en">A second view, usually through the scene camera, so you see the final frame while you work.</span><span class="l-ru">Второй вид, обычно через камеру сцены — вы видите итоговый кадр во время работы.</span></td></tr>
+    <tr><td>Scene · Shadows · Timeline</td><td class="wrap"><span class="l-en">The bottom window: scene and pose library, shadow settings, and the SAeditor timeline.</span><span class="l-ru">Нижнее окно: сцены и библиотека поз, настройки теней и таймлайн SAeditor.</span></td></tr>
+    <tr><td><span class="l-en">Status bar</span><span class="l-ru">Строка состояния</span></td><td class="wrap"><span class="l-en">Hints on the left; on the right the number of models, the selection, the tool, FPS and the render size.</span><span class="l-ru">Слева подсказки; справа число моделей, выделение, инструмент, FPS и размер рендера.</span></td></tr>
+  </table></div>
+
+  <h2><span class="l-en">Windows and tabs</span><span class="l-ru">Окна и вкладки</span></h2>
+  <ul class="l-en">
+    <li><strong>Move a tab:</strong> drag it by its tab bar and drop it on the edge of another window (it docks beside it) or on another window's tab bar (it becomes a tab there). Hold <kbd>Ctrl</kbd> while dropping to keep it floating.</li>
+    <li><strong>Maximize:</strong> double-click the tab bar. Double-click again to restore.</li>
+    <li><strong>Resize:</strong> drag the gap between two docked windows; neighbours follow.</li>
+    <li><strong>Window properties:</strong> right-click the tab bar → <span class="ui">Window properties</span> → <span class="ui">Always on top</span> keeps the window above the others (the Model Browser is on top by default).</li>
+    <li><strong>Reopen a closed window:</strong> the <span class="ui">Windows</span> menu lists all of them.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Перенести вкладку:</strong> перетащите её за строку вкладок и отпустите на краю другого окна (встанет рядом) или на строке вкладок другого окна (станет его вкладкой). Удерживайте <kbd>Ctrl</kbd> при отпускании, чтобы окно осталось плавающим.</li>
+    <li><strong>Развернуть:</strong> двойной щелчок по строке вкладок. Повторный — вернуть.</li>
+    <li><strong>Изменить размер:</strong> тяните промежуток между двумя состыкованными окнами; соседи подстраиваются.</li>
+    <li><strong>Свойства окна:</strong> правый щелчок по строке вкладок → <span class="ui">Window properties</span> → <span class="ui">Always on top</span> держит окно поверх остальных (браузер моделей поверх по умолчанию).</li>
+    <li><strong>Вернуть закрытое окно:</strong> все окна перечислены в меню <span class="ui">Windows</span>.</li>
+  </ul>
+
+  <h2><span class="l-en">Layouts</span><span class="l-ru">Раскладки</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/32_menu_layout.jpg" alt="Windows → Layout menu"></figure>
+    <div style="flex:1 1 300px;min-width:0">
+      <p class="l-en"><span class="ui">Windows → Layout</span> has three presets: <strong>SFM default</strong>, <strong>Wide Primary Viewport</strong> (one large viewport) and <strong>No bottom panel</strong>. <span class="ui">Save layout as…</span> keeps your own arrangement under a name; <span class="ui">Load layout</span> brings it back.</p>
+      <p class="l-ru"><span class="ui">Windows → Layout</span> содержит три пресета: <strong>SFM default</strong>, <strong>Wide Primary Viewport</strong> (один большой вьюпорт) и <strong>No bottom panel</strong>. <span class="ui">Save layout as…</span> сохраняет вашу раскладку под именем, <span class="ui">Load layout</span> возвращает её.</p>
+      <p class="l-en"><strong>Snap windows</strong> makes floating windows stick to edges. <strong>Lock layout</strong> stops windows from being moved by accident.</p>
+      <p class="l-ru"><strong>Snap windows</strong> притягивает плавающие окна к краям. <strong>Lock layout</strong> защищает окна от случайного перемещения.</p>
+      <p class="l-en">The editor remembers the layout you had when you closed it and restores it next time.</p>
+      <p class="l-ru">Редактор запоминает раскладку в момент закрытия и восстанавливает её при следующем открытии.</p>
+    </div>
+  </div>
+  <div class="note l-en"><p><span class="badge new">new</span> On screens narrower than about 1430 px (1366×768, 1280×720, 1024×768) the default layout used to break: the left panel covered the viewport and windows became floating. Since a0.4 the layout fits to any screen, and a saved layout that does not fit the current screen is replaced by the default one.</p></div>
+  <div class="note l-ru"><p><span class="badge new">new</span> На экранах уже примерно 1430 px (1366×768, 1280×720, 1024×768) стандартная раскладка раньше ломалась: левая панель закрывала вьюпорт, окна становились плавающими. С a0.4 раскладка подстраивается под любой экран, а сохранённая раскладка, которая не помещается на текущий экран, заменяется стандартной.</p></div>
+</section>
+
+<!-- ============================================================ MENUS -->
+<section class="page" id="pg-menus" data-group="ui" data-en="Menus" data-ru="Меню">
+  <h1><span class="l-en">Menus</span><span class="l-ru">Меню</span></h1>
+  <p class="lede l-en">A reference of every item in the menu bar.</p>
+  <p class="lede l-ru">Справочник по всем пунктам строки меню.</p>
+
+  <h2>File</h2>
+  <div class="row">
+    <figure class="fit"><img src="img/02_menu_file.jpg" alt="File menu" style="--w:260px"></figure>
+    <dl class="defs l-en" style="flex:1 1 300px">
+      <dt>Save Scene…</dt><dd>Save the scene under a name.</dd>
+      <dt>Load Scene…</dt><dd>Opens the Scene tab with the list of scenes.</dd>
+      <dt>Render…</dt><dd>Opens the <a href="#render">Render window</a>.</dd>
+      <dt>Autosave scene</dt><dd>A backup every 2.5 minutes; several older copies are kept.</dd>
+      <dt>Clear Scene</dt><dd>Deletes every object (asks first).</dd>
+      <dt>Render animation…</dt><dd>Added by SAeditor: the animation render.</dd>
+      <dt>Exit Editor</dt><dd>Closes the editor.</dd>
+    </dl>
+    <dl class="defs l-ru" style="flex:1 1 300px">
+      <dt>Save Scene…</dt><dd>Сохранить сцену под именем.</dd>
+      <dt>Load Scene…</dt><dd>Открывает вкладку Scene со списком сцен.</dd>
+      <dt>Render…</dt><dd>Открывает <a href="#render">окно рендера</a>.</dd>
+      <dt>Autosave scene</dt><dd>Резервная копия каждые 2,5 минуты; хранятся несколько предыдущих копий.</dd>
+      <dt>Clear Scene</dt><dd>Удаляет все объекты (с подтверждением).</dd>
+      <dt>Render animation…</dt><dd>Добавлено SAeditor: рендер анимации.</dd>
+      <dt>Exit Editor</dt><dd>Закрыть редактор.</dd>
+    </dl>
+  </div>
+
+  <h2>Edit</h2>
+  <div class="row">
+    <figure class="fit"><img src="img/03_menu_edit.jpg" alt="Edit menu" style="--w:240px"></figure>
+    <dl class="defs l-en" style="flex:1 1 300px">
+      <dt>Undo / Redo</dt><dd><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd>. Every edit can be undone, including deleting objects.</dd>
+      <dt>Duplicate / Delete</dt><dd><kbd>Ctrl</kbd>+<kbd>D</kbd> / <kbd>Del</kbd> for the selection.</dd>
+      <dt>Properties…</dt><dd>The <a href="#objects">Object Properties</a> window.</dd>
+      <dt>Copy / Paste pose</dt><dd><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd>, also between different models with the same skeleton.</dd>
+      <dt>Drop to floor</dt><dd>Puts the object on the surface below it.</dd>
+      <dt>Create</dt><dd>Model, camera, spot or point light, effect, three-point rig.</dd>
+      <dt>Deselect</dt><dd>Clears the selection.</dd>
+      <dt>Animation</dt><dd>SAeditor commands (keys, import, sounds).</dd>
+    </dl>
+    <dl class="defs l-ru" style="flex:1 1 300px">
+      <dt>Undo / Redo</dt><dd><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd>. Отменяется любое действие, включая удаление объектов.</dd>
+      <dt>Duplicate / Delete</dt><dd><kbd>Ctrl</kbd>+<kbd>D</kbd> / <kbd>Del</kbd> для выделения.</dd>
+      <dt>Properties…</dt><dd>Окно <a href="#objects">свойств объекта</a>.</dd>
+      <dt>Copy / Paste pose</dt><dd><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd>, в том числе между разными моделями с одинаковым скелетом.</dd>
+      <dt>Drop to floor</dt><dd>Опускает объект на поверхность под ним.</dd>
+      <dt>Create</dt><dd>Модель, камера, прожектор или точечный свет, эффект, трёхточечная схема.</dd>
+      <dt>Deselect</dt><dd>Снять выделение.</dd>
+      <dt>Animation</dt><dd>Команды SAeditor (ключи, импорт, звуки).</dd>
+    </dl>
+  </div>
+
+  <h2>Windows</h2>
+  <div class="row">
+    <figure class="fit"><img src="img/04_menu_windows.jpg" alt="Windows menu" style="--w:240px"></figure>
+    <div style="flex:1 1 300px;min-width:0">
+      <p class="l-en">Shows any window or tab: Animation Set Editor, Element Viewer, both viewports, Scene, Shadows, Model Browser, Render, <a href="#shaders">Addon shaders</a>, <a href="#mods">Mods</a>, Timeline. <strong>Notifications</strong> sets up the pop-up messages; <strong>Layout</strong> is described on the <a href="#workspace">workspace</a> page.</p>
+      <p class="l-ru">Показывает любое окно или вкладку: Animation Set Editor, Element Viewer, оба вьюпорта, Scene, Shadows, браузер моделей, Render, <a href="#shaders">Addon shaders</a>, <a href="#mods">Mods</a>, Timeline. <strong>Notifications</strong> настраивает всплывающие сообщения; <strong>Layout</strong> описан на странице <a href="#workspace">рабочего пространства</a>.</p>
+    </div>
+  </div>
+
+  <h2>View</h2>
+  <div class="row">
+    <figure class="fit"><img src="img/05_menu_view.jpg" alt="View menu" style="--w:240px"></figure>
+    <dl class="defs l-en" style="flex:1 1 300px">
+      <dt>Fullbright</dt><dd>Shows the scene without lighting — handy when building in the dark.</dd>
+      <dt>Exposure</dt><dd>Fixed brightness of the viewports or <em>Auto (engine)</em>.</dd>
+      <dt>Toggle Skeleton (B)</dt><dd>Bone markers on characters.</dd>
+      <dt>Bone size</dt><dd>Tiny, Small, Medium, Large markers.</dd>
+      <dt>Camera View (V)</dt><dd>Look through the selected scene camera.</dd>
+      <dt>World/Local (3)</dt><dd>Gizmo axes in world or object space.</dd>
+      <dt>Frame guides</dt><dd>Rule of thirds, center cross, safe areas, golden ratio.</dd>
+      <dt>Frame aspect</dt><dd>The shape of the picture (Free, 2:3 poster, A-series and others).</dd>
+      <dt>Interface Theme</dt><dd>See <a href="#themes">Themes</a>.</dd>
+    </dl>
+    <dl class="defs l-ru" style="flex:1 1 300px">
+      <dt>Fullbright</dt><dd>Сцена без освещения — удобно строить в темноте.</dd>
+      <dt>Exposure</dt><dd>Фиксированная яркость вьюпортов или <em>Auto (engine)</em>.</dd>
+      <dt>Toggle Skeleton (B)</dt><dd>Маркеры костей на персонажах.</dd>
+      <dt>Bone size</dt><dd>Размер маркеров: Tiny, Small, Medium, Large.</dd>
+      <dt>Camera View (V)</dt><dd>Смотреть через выделенную камеру сцены.</dd>
+      <dt>World/Local (3)</dt><dd>Оси гизмо в мировых или локальных координатах.</dd>
+      <dt>Frame guides</dt><dd>Правило третей, центр, безопасные зоны, золотое сечение.</dd>
+      <dt>Frame aspect</dt><dd>Пропорции картинки (Free, 2:3 poster, A-series и другие).</dd>
+      <dt>Interface Theme</dt><dd>См. <a href="#themes">Темы</a>.</dd>
+    </dl>
+  </div>
+
+  <h2>Help</h2>
+  <div class="row">
+    <figure class="fit"><img src="img/06_menu_help.jpg" alt="Help menu" style="--w:240px"></figure>
+    <p class="l-en" style="flex:1 1 300px"><strong>Hotkeys</strong> lists every key (also those of mods), <strong>Camera Settings…</strong> sets the work camera speed and FOV, <strong>About SPeditor</strong> shows the version, the news and the credits.</p>
+    <p class="l-ru" style="flex:1 1 300px"><strong>Hotkeys</strong> — список всех клавиш (и клавиш модов), <strong>Camera Settings…</strong> — скорость и FOV рабочей камеры, <strong>About SPeditor</strong> — версия, новости и благодарности.</p>
+  </div>
+  <div class="note l-en"><p><span class="badge new">new</span> In a0.3 the keys in the Edit menu were drawn with a square box instead of a gap (“Undo□Ctrl+Z”). Since a0.4 they are aligned on the right, as in the screenshot above.</p></div>
+  <div class="note l-ru"><p><span class="badge new">new</span> В a0.3 клавиши в меню Edit рисовались с квадратиком вместо отступа («Undo□Ctrl+Z»). С a0.4 они выровнены справа, как на скриншоте.</p></div>
+</section>
+
+<!-- ============================================================ VIEWPORTS -->
+<section class="page" id="pg-viewports" data-group="ui" data-en="Viewports and the work camera" data-ru="Вьюпорты и рабочая камера">
+  <h1><span class="l-en">Viewports and the work camera</span><span class="l-ru">Вьюпорты и рабочая камера</span></h1>
+  <p class="lede l-en">You look at the scene through the <strong>work camera</strong> — a free camera that is not part of the scene and never appears in renders.</p>
+  <p class="lede l-ru">Вы смотрите на сцену через <strong>рабочую камеру</strong> — свободную камеру, которая не входит в сцену и никогда не попадает в рендер.</p>
+
+  <h2><span class="l-en">Moving around</span><span class="l-ru">Перемещение</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Input</span><span class="l-ru">Ввод</span></th><th><span class="l-en">Action</span><span class="l-ru">Действие</span></th></tr>
+    <tr><td><kbd>RMB</kbd> + <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></td><td class="wrap"><span class="l-en">Fly. <kbd>Q</kbd> / <kbd>E</kbd> go down / up, <kbd>Shift</kbd> is faster, <kbd>Ctrl</kbd> slower. Moving the mouse with the right button held turns the camera.</span><span class="l-ru">Полёт. <kbd>Q</kbd> / <kbd>E</kbd> — вниз / вверх, <kbd>Shift</kbd> быстрее, <kbd>Ctrl</kbd> медленнее. Движение мыши с зажатой правой кнопкой поворачивает камеру.</span></td></tr>
+    <tr><td><kbd>Alt</kbd> + <kbd>LMB</kbd></td><td class="wrap"><span class="l-en">Orbit around the selection.</span><span class="l-ru">Облёт вокруг выделения.</span></td></tr>
+    <tr><td><span class="l-en">Wheel</span><span class="l-ru">Колесо</span></td><td class="wrap"><span class="l-en">Move forward / back (dolly).</span><span class="l-ru">Вперёд / назад (наезд).</span></td></tr>
+    <tr><td><kbd>Alt</kbd> + <span class="l-en">Wheel</span><span class="l-ru">колесо</span></td><td class="wrap"><span class="l-en">Change the field of view (zoom lens).</span><span class="l-ru">Изменить угол обзора (зум-объектив).</span></td></tr>
+    <tr><td><kbd>F</kbd></td><td class="wrap"><span class="l-en">Focus on the selected object or bone.</span><span class="l-ru">Сфокусироваться на выделенном объекте или кости.</span></td></tr>
+    <tr><td><kbd>V</kbd></td><td class="wrap"><span class="l-en">Look through the selected scene camera; <kbd>V</kbd> again goes back.</span><span class="l-ru">Смотреть через выделенную камеру сцены; повторное <kbd>V</kbd> — вернуться.</span></td></tr>
+  </table></div>
+  <div class="row">
+    <figure class="fit"><img src="img/28_camera_settings.jpg" alt="Camera Settings" style="--w:400px"></figure>
+    <p class="l-en" style="flex:1 1 280px"><span class="ui">Help → Camera Settings…</span> sets the <strong>fly speed</strong>, the <strong>wheel step</strong> and its <strong>smoothness</strong>, and the <strong>FOV</strong> of the work camera. <strong>Reset to defaults</strong> brings back 400 / 1.00 / 0.85 / 75°.</p>
+    <p class="l-ru" style="flex:1 1 280px"><span class="ui">Help → Camera Settings…</span> задаёт <strong>скорость полёта</strong>, <strong>шаг колеса</strong> и его <strong>плавность</strong>, а также <strong>FOV</strong> рабочей камеры. <strong>Reset to defaults</strong> возвращает 400 / 1.00 / 0.85 / 75°.</p>
+  </div>
+
+  <h2><span class="l-en">The viewport header and toolbar</span><span class="l-ru">Заголовок и панель вьюпорта</span></h2>
+  <p class="l-en">The header shows the camera on the left (<em>Work Camera</em> or the scene camera's name), the scene name, the frame aspect and size in the middle, and the field of view on the right. The dark bars around the picture are the <strong>frame gate</strong>: only what is inside them gets into the render.</p>
+  <p class="l-ru">В заголовке слева камера (<em>Work Camera</em> или имя камеры сцены), в центре имя сцены, пропорции и размер кадра, справа угол обзора. Тёмные поля вокруг картинки — <strong>рамка кадра</strong>: в рендер попадает только то, что внутри.</p>
+  <p class="l-en">The toolbar under the picture holds the tool buttons (move, rotate, scale, world/local axes, IK), view toggles (frame guides, skeleton, fullbright), the camera list and the gear menu.</p>
+  <p class="l-ru">Панель под картинкой: кнопки инструментов (перемещение, вращение, масштаб, мировые/локальные оси, IK), переключатели вида (сетки кадра, скелет, fullbright), список камер и меню-шестерёнка.</p>
+  <div class="row">
+    <figure class="fit"><img src="img/45_gear_menu.jpg" alt="Viewport gear menu" style="--w:220px"></figure>
+    <p class="l-en" style="flex:1 1 280px">The <strong>gear menu</strong> of a viewport: Focus selected, Camera Settings, Render, Exposure, Frame aspect, Hide viewport. The camera list chooses what the viewport shows; in the Secondary Viewport <strong>Auto</strong> shows the selected scene camera, and the work view while you look through a camera in the Primary one.</p>
+    <p class="l-ru" style="flex:1 1 280px"><strong>Меню-шестерёнка</strong> вьюпорта: Focus selected, Camera Settings, Render, Exposure, Frame aspect, Hide viewport. Список камер выбирает, что показывает вьюпорт; во втором вьюпорте <strong>Auto</strong> показывает выделенную камеру сцены, а пока Primary смотрит через камеру — рабочий вид.</p>
+  </div>
+  <div class="row">
+    <figure class="fit"><img src="img/34_menu_guides.jpg" alt="Frame guides" style="--w:340px"></figure>
+    <p class="l-en" style="flex:1 1 280px"><strong>Frame guides</strong> help with composition: rule of thirds, a center cross, safe areas and the golden ratio. They are drawn only in the viewport, never in the render.</p>
+    <p class="l-ru" style="flex:1 1 280px"><strong>Сетки кадра</strong> помогают с композицией: правило третей, центральный крест, безопасные зоны и золотое сечение. Они рисуются только во вьюпорте, в рендер не попадают.</p>
+  </div>
+  <div class="tip l-en"><p>The Primary and Secondary viewports pause while the Render window is open, to give the preview all the speed. The FPS counter reads about 20 when the game window is not focused — that is the engine saving power, not SPeditor.</p></div>
+  <div class="tip l-ru"><p>Пока открыто окно рендера, оба вьюпорта на паузе, чтобы превью работало быстрее. Когда окно игры не в фокусе, счётчик FPS показывает около 20 — это экономия движка, а не SPeditor.</p></div>
+</section>
+
+<!-- ============================================================ OBJECTS -->
+<section class="page" id="pg-objects" data-group="scene" data-en="Objects" data-ru="Объекты">
+  <h1><span class="l-en">Objects</span><span class="l-ru">Объекты</span></h1>
+  <p class="lede l-en">A scene is made of four kinds of objects: <strong>models</strong> (props and characters), <strong>lights</strong>, <strong>cameras</strong> and <strong>effects</strong>. All of them are listed in the Animation Set Editor.</p>
+  <p class="lede l-ru">Сцена состоит из объектов четырёх видов: <strong>модели</strong> (пропы и персонажи), <strong>свет</strong>, <strong>камеры</strong> и <strong>эффекты</strong>. Все они перечислены в Animation Set Editor.</p>
+
+  <h2><span class="l-en">Adding objects: the + menu</span><span class="l-ru">Добавление: меню +</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/42_plus_menu.jpg" alt="The + menu with Soft light kinds" style="--w:400px"></figure>
+    <dl class="defs l-en" style="flex:1 1 280px">
+      <dt>Model…</dt><dd>Opens the Model Browser.</dd>
+      <dt>Spawn Camera</dt><dd>A scene camera exactly where the work camera looks.</dd>
+      <dt>Spawn spot / point light in front</dt><dd>A plain light in front of the camera.</dd>
+      <dt>Soft light</dt><dd>One of 19 ready-made light kinds (see <a href="#lights">Lights</a>).</dd>
+      <dt>Add an effect…</dt><dd>Opens the Effect Browser (see <a href="#effects">Effects</a>).</dd>
+      <dt>Create 3-point light rig</dt><dd>Key, fill and rim lights around the selected model.</dd>
+    </dl>
+    <dl class="defs l-ru" style="flex:1 1 280px">
+      <dt>Model…</dt><dd>Открывает браузер моделей.</dd>
+      <dt>Spawn Camera</dt><dd>Камера сцены ровно там, куда смотрит рабочая камера.</dd>
+      <dt>Spawn spot / point light in front</dt><dd>Простой источник света перед камерой.</dd>
+      <dt>Soft light</dt><dd>Один из 19 готовых видов света (см. <a href="#lights">Свет</a>).</dd>
+      <dt>Add an effect…</dt><dd>Открывает браузер эффектов (см. <a href="#effects">Эффекты</a>).</dd>
+      <dt>Create 3-point light rig</dt><dd>Основной, заполняющий и контровой свет вокруг выделенной модели.</dd>
+    </dl>
+  </div>
+
+  <h2><span class="l-en">The Model Browser</span><span class="l-ru">Браузер моделей</span></h2>
+  <figure>
+    <img src="img/16_model_browser.jpg" alt="Model Browser">
+    <figcaption class="l-en"><b>Model Browser.</b> Folders on the left: <em>All models</em> and the game's spawnlists; icons on the right. Click an icon to add the model to the scene.</figcaption>
+    <figcaption class="l-ru"><b>Браузер моделей.</b> Слева папки: <em>All models</em> и списки создаваемого из игры; справа иконки. Щёлкните по иконке, чтобы добавить модель в сцену.</figcaption>
+  </figure>
+  <ul class="l-en">
+    <li><strong>Search</strong> by part of the name or the path, e.g. <code>alyx</code>, <code>combine</code>, <code>props_c17</code>.</li>
+    <li><strong>Spawn by path</strong>: type a full path such as <code>models/player/group01/male_07.mdl</code> and press <kbd>Enter</kbd> — handy for models from addons that are not in any spawnlist.</li>
+    <li>Any model works: props, ragdolls, player models and NPC models from the game and from the Workshop. Models with a physics skeleton become posable <strong>ragdolls</strong>; the others are <strong>props</strong> that can still have bones.</li>
+    <li>The status line shows how many models are indexed; the list of <em>All models</em> grows while indexing runs in the background.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Поиск</strong> по части имени или пути, например <code>alyx</code>, <code>combine</code>, <code>props_c17</code>.</li>
+    <li><strong>Создание по пути</strong>: введите полный путь, например <code>models/player/group01/male_07.mdl</code>, и нажмите <kbd>Enter</kbd> — удобно для моделей из аддонов, которых нет в списках.</li>
+    <li>Подходит любая модель: пропы, рэгдоллы, модели игроков и NPC из игры и из Workshop. Модели с физическим скелетом становятся позируемыми <strong>рэгдоллами</strong>, остальные — <strong>пропами</strong>, у которых тоже могут быть кости.</li>
+    <li>В строке состояния — сколько моделей проиндексировано; список <em>All models</em> растёт, пока индексация идёт в фоне.</li>
+  </ul>
+
+  <h2><span class="l-en">The object tree</span><span class="l-ru">Дерево объектов</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/08_ase.jpg" alt="Animation Set Editor" style="--w:340px"></figure>
+    <div style="flex:1 1 300px;min-width:0">
+      <p class="l-en">The left column of the Animation Set Editor lists every object of the scene. Icons tell the kind: a person for characters, a box for props, a bulb for lights, a camera, a lightning bolt for effects. An attached object shows its parent after an arrow: <em>Rebel 1 weapon → Rebel 1</em>.</p>
+      <p class="l-ru">Левая колонка Animation Set Editor перечисляет все объекты сцены. Значок показывает вид: человек — персонаж, ящик — проп, лампочка — свет, камера, молния — эффект. У привязанного объекта после стрелки указан родитель: <em>Rebel 1 weapon → Rebel 1</em>.</p>
+      <p class="l-en">Expand a character to see its <strong>control groups</strong>: Face, Eyes, Body, Head, RightArm, LeftArm, RightLeg, LeftLeg, RightFingers, LeftFingers. Clicking a group shows only its controls in the right column.</p>
+      <p class="l-ru">Раскройте персонажа, чтобы увидеть <strong>группы управления</strong>: Face, Eyes, Body, Head, RightArm, LeftArm, RightLeg, LeftLeg, RightFingers, LeftFingers. Щелчок по группе показывает в правой колонке только её элементы.</p>
+      <p class="l-en">The right column holds the controls of the selection: face presets and flex sliders, eye target, bone rows (<em>Bone - pos</em>, <em>- rot</em>, <em>- scale</em>), or the settings of a light or camera.</p>
+      <p class="l-ru">Правая колонка — элементы управления выделенным объектом: пресеты и слайдеры лица, направление взгляда, строки костей (<em>Bone - pos</em>, <em>- rot</em>, <em>- scale</em>) или настройки света и камеры.</p>
+      <p class="l-en">The search field filters the tree. The gear button holds tree options (expand / collapse all).</p>
+      <p class="l-ru">Поле поиска фильтрует дерево. Кнопка-шестерёнка — настройки дерева (развернуть / свернуть всё).</p>
+    </div>
+  </div>
+
+  <h2><span class="l-en">Selecting</span><span class="l-ru">Выделение</span></h2>
+  <ul class="l-en">
+    <li><kbd>LMB</kbd> on an object in a viewport or in the tree selects it. <kbd>LMB</kbd> on a bone marker selects that bone.</li>
+    <li><kbd>Ctrl</kbd> + <kbd>LMB</kbd> adds an object to the selection or removes it. Several selected objects are moved, rotated, scaled, duplicated and deleted together.</li>
+    <li>Click on empty space or use <span class="ui">Edit → Deselect</span> to clear the selection.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><kbd>ЛКМ</kbd> по объекту во вьюпорте или в дереве выделяет его. <kbd>ЛКМ</kbd> по маркеру кости выделяет эту кость.</li>
+    <li><kbd>Ctrl</kbd> + <kbd>ЛКМ</kbd> добавляет объект к выделению или убирает его. Несколько выделенных объектов двигаются, вращаются, масштабируются, дублируются и удаляются вместе.</li>
+    <li>Щелчок по пустому месту или <span class="ui">Edit → Deselect</span> снимает выделение.</li>
+  </ul>
+
+  <h2><span class="l-en">The object menu</span><span class="l-ru">Меню объекта</span></h2>
+  <p class="l-en">A short <kbd>RMB</kbd> click on an object (without moving the mouse) in the viewport or in the tree opens its menu.</p>
+  <p class="l-ru">Короткий щелчок <kbd>ПКМ</kbd> по объекту (не двигая мышь) во вьюпорте или в дереве открывает его меню.</p>
+  <div class="row">
+    <figure class="fit"><img src="img/13_object_menu_anim.jpg" alt="Object menu of a character" style="--w:460px"></figure>
+    <dl class="defs l-en" style="flex:1 1 280px">
+      <dt>Properties…</dt><dd>Colour, textures, size, shadow (below).</dd>
+      <dt>Appearance</dt><dd>Quick colour, remove / restore textures, cast shadow, reset.</dd>
+      <dt>Rename… / Duplicate / Delete</dt><dd>As named.</dd>
+      <dt>Renderable</dt><dd>Off: the object is hidden in viewports and renders.</dd>
+      <dt>Selectable</dt><dd>Off: the object is locked and cannot be clicked by accident.</dd>
+      <dt>Attach to…</dt><dd>See <a href="#attach">Attaching and wearing</a>.</dd>
+      <dt>Show in Element Viewer / Focus</dt><dd>As named.</dd>
+      <dt>Utilities</dt><dd>Drop to floor, 3-point rig, reset pose, copy / paste pose.</dd>
+      <dt>Set Skin / Set Body</dt><dd>Skins and bodygroups of the model.</dd>
+      <dt>Animation</dt><dd>SAeditor: set a key, import an animation, add a sound.</dd>
+    </dl>
+    <dl class="defs l-ru" style="flex:1 1 280px">
+      <dt>Properties…</dt><dd>Цвет, текстуры, размер, тень (ниже).</dd>
+      <dt>Appearance</dt><dd>Быстрый цвет, убрать / вернуть текстуры, тень, сброс.</dd>
+      <dt>Rename… / Duplicate / Delete</dt><dd>Переименовать, дублировать, удалить.</dd>
+      <dt>Renderable</dt><dd>Выключено: объект скрыт во вьюпортах и в рендере.</dd>
+      <dt>Selectable</dt><dd>Выключено: объект заблокирован, его нельзя случайно выделить.</dd>
+      <dt>Attach to…</dt><dd>См. <a href="#attach">Привязка и одежда</a>.</dd>
+      <dt>Show in Element Viewer / Focus</dt><dd>Показать в Element Viewer / навести камеру.</dd>
+      <dt>Utilities</dt><dd>На пол, трёхточечный свет, сброс позы, копировать / вставить позу.</dd>
+      <dt>Set Skin / Set Body</dt><dd>Скины и бодигруппы модели.</dd>
+      <dt>Animation</dt><dd>SAeditor: ключ, импорт анимации, звук.</dd>
+    </dl>
+  </div>
+  <p class="l-en">Cameras and lights also have <strong>Aim camera at object…</strong>; cameras have <strong>Look through this camera</strong> and <strong>Match camera to work view</strong>; effects have <strong>Play from the start</strong> and <strong>Choose another effect…</strong>.</p>
+  <p class="l-ru">У камер и света есть <strong>Aim camera at object…</strong> (навести на объект); у камер — <strong>Look through this camera</strong> и <strong>Match camera to work view</strong>; у эффектов — <strong>Play from the start</strong> и <strong>Choose another effect…</strong>.</p>
+
+  <h2><span class="l-en">Object Properties</span><span class="l-ru">Свойства объекта</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/14_props.jpg" alt="Object Properties" style="--w:360px"></figure>
+    <div style="flex:1 1 300px;min-width:0">
+      <dl class="defs l-en">
+        <dt>Colour</dt><dd>Tint and opacity (the fourth field is alpha: below 255 the object becomes see-through). <em>Reset colour</em> returns white.</dd>
+        <dt>Material</dt><dd>Replace textures for the <em>Whole model</em> or one material slot. Pick a material from the grid or type a path such as <code>models/shiny</code>. <em>Remove textures</em> makes the model plain white so it takes the object colour; <em>Restore original textures</em> undoes it.</dd>
+        <dt>Size</dt><dd>Props only: overall scale and stretching in length (X), width (Y) and height (Z). The Scale tool <kbd>4</kbd> does the same with the mouse.</dd>
+        <dt>Shadow</dt><dd><em>Cast shadow</em> off removes the object from shadow maps — useful for an object in front of a lamp.</dd>
+        <dt>Reset appearance</dt><dd>Everything back to the original.</dd>
+      </dl>
+      <dl class="defs l-ru">
+        <dt>Colour</dt><dd>Оттенок и прозрачность (четвёртое поле — альфа: ниже 255 объект становится прозрачным). <em>Reset colour</em> возвращает белый.</dd>
+        <dt>Material</dt><dd>Замена текстур для всей модели (<em>Whole model</em>) или одного слота материала. Выберите материал из сетки или введите путь, например <code>models/shiny</code>. <em>Remove textures</em> делает модель белой, и она принимает цвет объекта; <em>Restore original textures</em> возвращает текстуры.</dd>
+        <dt>Size</dt><dd>Только пропы: общий масштаб и растяжение по длине (X), ширине (Y) и высоте (Z). Инструмент масштаба <kbd>4</kbd> делает то же мышью.</dd>
+        <dt>Shadow</dt><dd>Выключенный <em>Cast shadow</em> убирает объект из теней — полезно для предмета перед лампой.</dd>
+        <dt>Reset appearance</dt><dd>Вернуть всё как было.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h2>Element Viewer</h2>
+  <div class="row">
+    <figure class="fit"><img src="img/15_element_viewer.jpg" alt="Element Viewer" style="--w:340px"></figure>
+    <p class="l-en" style="flex:1 1 280px">The Element Viewer tab (next to the Animation Set Editor) shows every property of the selection as numbers: name, model, position x/y/z, pitch/yaw/roll, scale, skin, renderable, selectable, and for lights and cameras all their settings with SFM names (<em>intensity, fieldOfView, castsShadows, shadowFilterSize…</em>). Type a value for exact placement.</p>
+    <p class="l-ru" style="flex:1 1 280px">Вкладка Element Viewer (рядом с Animation Set Editor) показывает все свойства выделения числами: имя, модель, позиция x/y/z, pitch/yaw/roll, масштаб, скин, renderable, selectable, а для света и камер — все настройки с именами из SFM (<em>intensity, fieldOfView, castsShadows, shadowFilterSize…</em>). Вводите значения для точной расстановки.</p>
+  </div>
+  <div class="tip l-en"><p>Any slider in SPeditor: <kbd>Shift</kbd> + drag is fine, <kbd>Ctrl</kbd> + drag is coarse; right-click a slider for <em>Reset to default</em> and <em>Enter value…</em>.</p></div>
+  <div class="tip l-ru"><p>Любой слайдер в SPeditor: <kbd>Shift</kbd> + перетаскивание — точно, <kbd>Ctrl</kbd> + перетаскивание — грубо; правый щелчок по слайдеру — <em>Reset to default</em> и <em>Enter value…</em>.</p></div>
+</section>
+
+<!-- ============================================================ POSING -->
+<section class="page" id="pg-posing" data-group="scene" data-en="Posing" data-ru="Позы">
+  <h1><span class="l-en">Posing</span><span class="l-ru">Позы</span></h1>
+  <p class="lede l-en">Everything is posed with one gizmo: whole objects and single bones, including fingers.</p>
+  <p class="lede l-ru">Всё позируется одним гизмо: объекты целиком и отдельные кости, включая пальцы.</p>
+
+  <h2><span class="l-en">The gizmo</span><span class="l-ru">Гизмо</span></h2>
+  <div class="row">
+    <figure><img src="img/09_gizmo_move.jpg" alt="Move gizmo"><figcaption class="l-en"><b>Move</b> <kbd>1</kbd></figcaption><figcaption class="l-ru"><b>Перемещение</b> <kbd>1</kbd></figcaption></figure>
+    <figure><img src="img/10_gizmo_rotate.jpg" alt="Rotate gizmo"><figcaption class="l-en"><b>Rotate</b> <kbd>2</kbd></figcaption><figcaption class="l-ru"><b>Вращение</b> <kbd>2</kbd></figcaption></figure>
+  </div>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Key</span><span class="l-ru">Клавиша</span></th><th><span class="l-en">Tool</span><span class="l-ru">Инструмент</span></th></tr>
+    <tr><td><kbd>1</kbd></td><td class="wrap"><span class="l-en"><strong>Move.</strong> Drag an arrow to move along an axis, the centre to move in the screen plane.</span><span class="l-ru"><strong>Перемещение.</strong> Тяните стрелку для движения по оси, центр — для движения в плоскости экрана.</span></td></tr>
+    <tr><td><kbd>2</kbd></td><td class="wrap"><span class="l-en"><strong>Rotate.</strong> Drag a ring to turn around its axis.</span><span class="l-ru"><strong>Вращение.</strong> Тяните кольцо, чтобы повернуть вокруг его оси.</span></td></tr>
+    <tr><td><kbd>4</kbd></td><td class="wrap"><span class="l-en"><strong>Scale.</strong> The centre scales evenly, an axis stretches along it. Works on props and on bones of any model.</span><span class="l-ru"><strong>Масштаб.</strong> Центр — равномерно, ось — растяжение по ней. Работает на пропах и на костях любой модели.</span></td></tr>
+    <tr><td><kbd>3</kbd></td><td class="wrap"><span class="l-en"><strong>World / local axes.</strong> Local axes follow the object's own rotation.</span><span class="l-ru"><strong>Мировые / локальные оси.</strong> Локальные оси следуют повороту самого объекта.</span></td></tr>
+    <tr><td><kbd>I</kbd></td><td class="wrap"><span class="l-en"><strong>Inverse kinematics.</strong> Move a hand or a foot and the whole arm or leg follows.</span><span class="l-ru"><strong>Инверсная кинематика.</strong> Двигайте кисть или стопу — рука или нога следует за ней.</span></td></tr>
+  </table></div>
+
+  <h2><span class="l-en">Bones</span><span class="l-ru">Кости</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/11_bone_ik.jpg" alt="A hand bone with IK" style="--w:520px"><figcaption class="l-en"><b>The left hand selected with IK on.</b> The small white cubes are bone markers.</figcaption><figcaption class="l-ru"><b>Выделена левая кисть, IK включён.</b> Маленькие белые кубики — маркеры костей.</figcaption></figure>
+    <div style="flex:1 1 280px;min-width:0">
+      <p class="l-en">Click a bone marker to select the bone, or click a row <em>Bone - pos / - rot / - scale</em> in the Animation Set Editor: it selects the bone and the matching tool at once.</p>
+      <p class="l-ru">Щёлкните по маркеру кости, чтобы выделить её, или по строке <em>Кость - pos / - rot / - scale</em> в Animation Set Editor: она сразу выделяет кость и нужный инструмент.</p>
+      <p class="l-en">Bones with a physics body (pelvis, spine, head, upper arms, forearms, hands, thighs, calves, feet) move the ragdoll itself. Bones without one (clavicles, fingers, toes, face bones) are moved with bone offsets. Both are saved in poses and animated by SAeditor.</p>
+      <p class="l-ru">Кости с физическим телом (таз, позвоночник, голова, плечи, предплечья, кисти, бёдра, голени, стопы) двигают сам рэгдолл. Кости без него (ключицы, пальцы, пальцы ног, кости лица) двигаются смещениями костей. И то, и другое сохраняется в позах и анимируется SAeditor.</p>
+      <p class="l-en">With <span class="ui">View → Toggle Skeleton (B)</span> the markers are hidden; <span class="ui">View → Bone size</span> makes them larger or smaller.</p>
+      <p class="l-ru"><span class="ui">View → Toggle Skeleton (B)</span> прячет маркеры; <span class="ui">View → Bone size</span> делает их больше или меньше.</p>
+    </div>
+  </div>
+  <h3><span class="l-en">Scaling bones</span><span class="l-ru">Масштаб костей</span> <span class="badge new">new</span></h3>
+  <p class="l-en">Select any bone and press <kbd>4</kbd> (or click its <em>- scale</em> row): a big head, long arms, a giant hand. In a0.3 the Scale tool worked only on bones without physics (fingers) and silently acted as Move on a hand or the head; a0.4 scales every bone.</p>
+  <p class="l-ru">Выделите любую кость и нажмите <kbd>4</kbd> (или строку <em>- scale</em>): большая голова, длинные руки, огромная кисть. В a0.3 масштаб работал только на костях без физики (пальцах), а на кисти или голове молча превращался в перемещение; в a0.4 масштабируется любая кость.</p>
+
+  <h2><span class="l-en">Face and eyes</span><span class="l-ru">Лицо и глаза</span></h2>
+  <ul class="l-en">
+    <li><strong>Face presets</strong> at the top: <em>Default, Zero, Half, One</em> set all flexes at once.</li>
+    <li><strong>Flex sliders</strong> are grouped as Brows, Eyes, Nose, Mouth, Other (e.g. <em>smile, jaw_drop, blink</em>). Models without face flexes do not show the section.</li>
+    <li><strong>Eyes:</strong> tick <em>viewTarget</em> to aim the eyes; <em>eyes_rightleft</em>, <em>eyes_updown</em> and <em>eyes_distance</em> set where they look.</li>
+    <li><strong>Skins and bodygroups</strong>: object menu → <span class="ui">Set Skin</span> / <span class="ui">Set Body</span>.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Пресеты лица</strong> вверху: <em>Default, Zero, Half, One</em> задают все флексы сразу.</li>
+    <li><strong>Слайдеры мимики</strong> сгруппированы: Brows, Eyes, Nose, Mouth, Other (например, <em>smile, jaw_drop, blink</em>). У моделей без мимики раздела нет.</li>
+    <li><strong>Глаза:</strong> включите <em>viewTarget</em>, чтобы направить взгляд; <em>eyes_rightleft</em>, <em>eyes_updown</em> и <em>eyes_distance</em> задают, куда он смотрит.</li>
+    <li><strong>Скины и бодигруппы</strong>: меню объекта → <span class="ui">Set Skin</span> / <span class="ui">Set Body</span>.</li>
+  </ul>
+
+  <h2><span class="l-en">Poses: copy, paste, library</span><span class="l-ru">Позы: копирование и библиотека</span></h2>
+  <ul class="l-en">
+    <li><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd> copy the pose of the selected character and paste it onto another. Between different models with the same skeleton the pose is carried over by bone names, keeping each model's proportions.</li>
+    <li>The <strong>Pose library</strong> in the Scene tab: <em>Save pose</em>, <em>Load pose</em>, <em>Delete</em>. The list shows the pose name and the model it was made on.</li>
+    <li><span class="ui">Utilities → Reset pose of selected</span> returns bones, face and eyes to the original.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd> копируют позу выделенного персонажа и вставляют её другому. Между разными моделями с одинаковым скелетом поза переносится по именам костей с сохранением пропорций каждой модели.</li>
+    <li><strong>Библиотека поз</strong> во вкладке Scene: <em>Save pose</em>, <em>Load pose</em>, <em>Delete</em>. В списке — имя позы и модель, на которой она сделана.</li>
+    <li><span class="ui">Utilities → Reset pose of selected</span> возвращает кости, лицо и глаза в исходное состояние.</li>
+  </ul>
+  <div class="warn l-en"><p>Addons that change ragdolls (active ragdoll systems, Fedhoria-like mods) can fight SPeditor and make limbs impossible to pose. If limbs jump back or fall, disable such addons while you work in the editor.</p></div>
+  <div class="warn l-ru"><p>Аддоны, меняющие рэгдоллы (активные рэгдоллы, моды наподобие Fedhoria), могут мешать SPeditor, и конечности перестают позироваться. Если конечности отскакивают или падают, отключите такие аддоны на время работы в редакторе.</p></div>
+</section>
+
+<!-- ============================================================ ATTACH -->
+<section class="page" id="pg-attach" data-group="scene" data-en="Attaching and wearing" data-ru="Привязка и одежда">
+  <h1><span class="l-en">Attaching and wearing</span><span class="l-ru">Привязка и одежда</span></h1>
+  <p class="lede l-en">Objects can follow other objects: a weapon in a hand, a hat on a head, a muzzle flash on a gun, or clothing that bends with the body.</p>
+  <p class="lede l-ru">Объекты могут следовать за другими: оружие в руке, шляпа на голове, вспышка на стволе или одежда, которая гнётся вместе с телом.</p>
+  <figure>
+    <img src="img/12_object_menu.jpg" alt="Attach to menu">
+    <figcaption class="l-en"><b>Object menu → Attach to… → a character.</b> At the top <em>Wear</em>, then <em>(whole object)</em>, then every physics bone.</figcaption>
+    <figcaption class="l-ru"><b>Меню объекта → Attach to… → персонаж.</b> Вверху <em>Wear</em>, затем <em>(whole object)</em>, затем все физические кости.</figcaption>
+  </figure>
+
+  <h2><span class="l-en">Three ways to attach</span><span class="l-ru">Три способа привязки</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Choice</span><span class="l-ru">Пункт</span></th><th><span class="l-en">Result</span><span class="l-ru">Результат</span></th><th><span class="l-en">Use for</span><span class="l-ru">Для чего</span></th></tr>
+    <tr><td><strong>R_Hand</strong>, <strong>Head1</strong>… </td><td class="wrap"><span class="l-en">Follows that bone rigidly, keeping its offset.</span><span class="l-ru">Жёстко следует за костью, сохраняя смещение.</span></td><td class="wrap"><span class="l-en">Weapons, props in hands, hats, helmets as separate props.</span><span class="l-ru">Оружие, предметы в руках, шляпы, шлемы-пропы.</span></td></tr>
+    <tr><td><strong>(whole object)</strong></td><td class="wrap"><span class="l-en">Follows the object's root (pelvis of a character).</span><span class="l-ru">Следует за корнем объекта (тазом персонажа).</span></td><td class="wrap"><span class="l-en">A rider on a vehicle, a light on a car.</span><span class="l-ru">Наездник на транспорте, фара на машине.</span></td></tr>
+    <tr><td><strong>Wear</strong> <span class="badge new">new</span></td><td class="wrap"><span class="l-en">Every bone of the worn model follows the bone with the same name on the wearer (bone merge).</span><span class="l-ru">Каждая кость надетой модели следует за одноимённой костью носителя (bone merge).</span></td><td class="wrap"><span class="l-en">Clothing, armour, hair, accessories made for the same skeleton (e.g. ValveBiped).</span><span class="l-ru">Одежда, броня, волосы, аксессуары под тот же скелет (например, ValveBiped).</span></td></tr>
+  </table></div>
+
+  <h2><span class="l-en">Putting clothes on a character</span><span class="l-ru">Как надеть одежду на персонажа</span></h2>
+  <ol class="steps l-en">
+    <li>Add the clothing model (from a clothing addon) and the character.</li>
+    <li>Right-click the clothing → <span class="ui">Attach to…</span> → the character → <span class="ui">Wear (clothing: follows the skeleton)</span>.</li>
+    <li>Pose the character: the clothing bends with every limb. Skin, bodygroups and colour of the clothing still work.</li>
+    <li>To take it off: object menu → <span class="ui">Detach</span>.</li>
+  </ol>
+  <ol class="steps l-ru">
+    <li>Добавьте модель одежды (из аддона с одеждой) и персонажа.</li>
+    <li>Правый щелчок по одежде → <span class="ui">Attach to…</span> → персонаж → <span class="ui">Wear (одежда: гнётся по скелету)</span>.</li>
+    <li>Позируйте персонажа: одежда гнётся вместе с каждой конечностью. Скин, бодигруппы и цвет одежды продолжают работать.</li>
+    <li>Чтобы снять: меню объекта → <span class="ui">Detach</span>.</li>
+  </ol>
+  <div class="note l-en"><p>Before a0.4 clothing could only be attached rigidly to one bone, so it did not follow the arms and legs. <em>Wear</em> arrives in a0.4; it is saved with the scene, survives duplicating and can be undone.</p></div>
+  <div class="note l-ru"><p>До a0.4 одежду можно было привязать только жёстко к одной кости, поэтому она не следовала за руками и ногами. <em>Wear</em> появляется в a0.4; он сохраняется в сцене, переживает дублирование и отменяется.</p></div>
+  <div class="warn l-en"><p>Wearing works only when the bone names match. A model made for another skeleton (TF2, a custom rig) stays at the wearer's root. You can still click and select the worn object: its invisible copy stays where it was attached.</p></div>
+  <div class="warn l-ru"><p>Одежда работает только при совпадении имён костей. Модель под другой скелет (TF2, свой риг) остаётся у корня носителя. Надетый объект по-прежнему можно выделить щелчком: его невидимая копия стоит там, где его привязали.</p></div>
+
+  <h2><span class="l-en">Rules</span><span class="l-ru">Правила</span></h2>
+  <ul class="l-en">
+    <li>Move an attached object by hand and the new offset is kept.</li>
+    <li>Chains are allowed (a scope on a gun in a hand); an object cannot be attached to its own child.</li>
+    <li>When the parent is deleted, the object stays where it was.</li>
+    <li>Attachments are saved in scenes and followed in SAeditor animations.</li>
+  </ul>
+  <ul class="l-ru">
+    <li>Сдвиньте привязанный объект вручную — новое смещение сохранится.</li>
+    <li>Цепочки разрешены (прицел на оружии в руке); объект нельзя привязать к его же потомку.</li>
+    <li>Если родителя удалить, объект остаётся на месте.</li>
+    <li>Привязки сохраняются в сценах и работают в анимациях SAeditor.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ LIGHTS -->
+<section class="page" id="pg-lights" data-group="scene" data-en="Lights" data-ru="Свет">
+  <h1><span class="l-en">Lights</span><span class="l-ru">Свет</span></h1>
+  <p class="lede l-en">Light makes a poster. SPeditor has point lights and spot lights; spot lights cast shadows and have a soft edge, penumbra, a glow and a visible beam.</p>
+  <p class="lede l-ru">Постер делает свет. В SPeditor есть точечный свет и прожекторы; прожекторы отбрасывают тени, у них есть мягкий край, полутень, свечение и видимый луч.</p>
+  <figure>
+    <img src="img/40_lights_overview.jpg" alt="Lighting demo">
+    <figcaption class="l-en"><b>Six lights:</b> a warm softbox as the key light, a blue rim light, orange “light through blinds” on the wall, a stage spot with a beam, two neon glows. The selected softbox shows its cone and its controls in the Animation Set Editor.</figcaption>
+    <figcaption class="l-ru"><b>Шесть источников:</b> тёплый софтбокс как основной свет, синий контровой, оранжевый «свет сквозь жалюзи» на стене, сценический прожектор с лучом, два неоновых свечения. У выделенного софтбокса видны конус и настройки в Animation Set Editor.</figcaption>
+  </figure>
+
+  <h2><span class="l-en">Point and spot</span><span class="l-ru">Точечный и прожектор</span></h2>
+  <div class="tbl"><table>
+    <tr><th></th><th><span class="l-en">Point light</span><span class="l-ru">Точечный свет</span></th><th><span class="l-en">Spot light</span><span class="l-ru">Прожектор</span></th></tr>
+    <tr><td><span class="l-en">Shines</span><span class="l-ru">Светит</span></td><td class="wrap"><span class="l-en">in all directions</span><span class="l-ru">во все стороны</span></td><td class="wrap"><span class="l-en">in a cone or through a mask</span><span class="l-ru">конусом или через маску</span></td></tr>
+    <tr><td><span class="l-en">Shadows</span><span class="l-ru">Тени</span></td><td class="wrap"><span class="l-en">no (an engine limit)</span><span class="l-ru">нет (ограничение движка)</span></td><td class="wrap"><span class="l-en">yes, soft, adjustable</span><span class="l-ru">да, мягкие, настраиваемые</span></td></tr>
+    <tr><td><span class="l-en">Good for</span><span class="l-ru">Подходит для</span></td><td class="wrap"><span class="l-en">fill light, neon, fire, bulbs, muzzle flashes</span><span class="l-ru">заполняющий свет, неон, огонь, лампы, вспышки выстрелов</span></td><td class="wrap"><span class="l-en">key and rim light, sun, windows, lamps</span><span class="l-ru">основной и контровой свет, солнце, окна, фонари</span></td></tr>
+  </table></div>
+  <p class="l-en">Switch a light between the two kinds with its <em>Type</em> control in the Animation Set Editor.</p>
+  <p class="l-ru">Тип источника переключается полем <em>Type</em> в Animation Set Editor.</p>
+
+  <h2><span class="l-en">Light kinds</span><span class="l-ru">Виды света</span></h2>
+  <p class="l-en"><span class="ui plain">+</span> → <span class="ui">Soft light</span> creates a light already set up for a purpose. With a light selected, the <em>Light kinds</em> list at the top of the right column turns that light into another kind.</p>
+  <p class="l-ru"><span class="ui plain">+</span> → <span class="ui">Soft light</span> создаёт источник, уже настроенный под задачу. Если источник выделен, список <em>Light kinds</em> вверху правой колонки превращает его в другой вид.</p>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Kind</span><span class="l-ru">Вид</span></th><th><span class="l-en">What it is</span><span class="l-ru">Что это</span></th></tr>
+    <tr><td>Softbox</td><td class="wrap"><span class="l-en">Large soft key light, the studio standard.</span><span class="l-ru">Большой мягкий основной свет, студийный стандарт.</span></td></tr>
+    <tr><td>Strip light</td><td class="wrap"><span class="l-en">A narrow tall softbox for edges and reflections.</span><span class="l-ru">Узкий высокий софтбокс для контуров и бликов.</span></td></tr>
+    <tr><td>Beauty dish</td><td class="wrap"><span class="l-en">Round, contrasty portrait light.</span><span class="l-ru">Круглый контрастный портретный свет.</span></td></tr>
+    <tr><td>Ring light</td><td class="wrap"><span class="l-en">Ring around the lens: flat face light, round catchlights.</span><span class="l-ru">Кольцо вокруг объектива: ровный свет на лице, круглые блики в глазах.</span></td></tr>
+    <tr><td>Rim light</td><td class="wrap"><span class="l-en">Back light that outlines the silhouette.</span><span class="l-ru">Контровой свет, обводящий силуэт.</span></td></tr>
+    <tr><td>Window light</td><td class="wrap"><span class="l-en">Daylight through a window frame.</span><span class="l-ru">Дневной свет через оконную раму.</span></td></tr>
+    <tr><td>Light through blinds</td><td class="wrap"><span class="l-en">Stripes of light, the noir look.</span><span class="l-ru">Полосы света, нуарный стиль.</span></td></tr>
+    <tr><td>Sun through leaves</td><td class="wrap"><span class="l-en">Dappled sunlight.</span><span class="l-ru">Пятнистый солнечный свет сквозь листву.</span></td></tr>
+    <tr><td>Golden hour sun</td><td class="wrap"><span class="l-en">Low warm sun with long shadows.</span><span class="l-ru">Низкое тёплое солнце с длинными тенями.</span></td></tr>
+    <tr><td>Sunset gel</td><td class="wrap"><span class="l-en">A coloured gradient of sunset light.</span><span class="l-ru">Цветной градиент закатного света.</span></td></tr>
+    <tr><td>Moonlight</td><td class="wrap"><span class="l-en">Cold dim parallel light.</span><span class="l-ru">Холодный тусклый параллельный свет.</span></td></tr>
+    <tr><td>Stage spot</td><td class="wrap"><span class="l-en">Hard round spot with a visible beam.</span><span class="l-ru">Жёсткое круглое пятно с видимым лучом.</span></td></tr>
+    <tr><td>Street lamp</td><td class="wrap"><span class="l-en">Warm cone from above.</span><span class="l-ru">Тёплый конус сверху.</span></td></tr>
+    <tr><td>Headlight</td><td class="wrap"><span class="l-en">Car headlight with a glow.</span><span class="l-ru">Автомобильная фара со свечением.</span></td></tr>
+    <tr><td>Red and blue beacon</td><td class="wrap"><span class="l-en">Police lights.</span><span class="l-ru">Полицейская мигалка.</span></td></tr>
+    <tr><td>Eye slit</td><td class="wrap"><span class="l-en">A narrow strip of light across the eyes.</span><span class="l-ru">Узкая полоса света на глазах.</span></td></tr>
+    <tr><td>Candle · Light bulb · Neon glow</td><td class="wrap"><span class="l-en">Small point sources with a visible glow.</span><span class="l-ru">Небольшие точечные источники с видимым свечением.</span></td></tr>
+  </table></div>
+  <p class="l-en"><strong>Presets</strong> (colour only): Soft white, Warm lamp, Cool moonlight, Neon cyan, Neon magenta, Fire. <strong>Create 3-point light rig</strong> places key, fill and rim lights around the selected model.</p>
+  <p class="l-ru"><strong>Presets</strong> (только цвет): Soft white, Warm lamp, Cool moonlight, Neon cyan, Neon magenta, Fire. <strong>Create 3-point light rig</strong> ставит основной, заполняющий и контровой свет вокруг выделенной модели.</p>
+
+  <h2><span class="l-en">Light settings</span><span class="l-ru">Настройки источника</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/41_light_controls.jpg" alt="Spot light controls" style="--w:220px"></figure>
+    <div style="flex:1 1 320px;min-width:0">
+      <dl class="defs l-en">
+        <dt>color · intensity</dt><dd>Colour (click the swatch for a palette and a mixer) and brightness.</dd>
+        <dt>distance · fieldOfView</dt><dd>How far the light reaches; the cone angle of a spot.</dd>
+        <dt>edge softness</dt><dd>0 keeps the mask as it is, 1 fades the light from the centre to the edge.</dd>
+        <dt>source size</dt><dd>Size of the lamp: a larger source gives softer shadows that blur with distance (penumbra). Calculated in the render and its preview.</dd>
+        <dt>castsShadows · shadowFilterSize</dt><dd>Shadows on/off and the blur of their edge.</dd>
+        <dt>shadowDepthBias · shadowSlopeBias</dt><dd>Raise if lit surfaces get stripes; lower if the shadow detaches from the object.</dd>
+        <dt>nearZ</dt><dd>The light starts at this distance from the source.</dd>
+        <dt>orthographic · orthoSize</dt><dd>A parallel square beam like sunlight: shadows keep their size at any distance.</dd>
+        <dt>constant / linear / quadratic attenuation</dt><dd>Falloff with distance. Quadratic is like a real lamp; constant does not fade at all (good for far subjects).</dd>
+        <dt>texture (light mask)</dt><dd>The shape of the beam: soft masks of SPeditor (softbox, strip, round, ring, window, blinds, bars, slit, leaves, sunset…), Lamp tool textures, other game textures or any texture by path.</dd>
+        <dt>glow size · glow brightness</dt><dd>A visible glow around the source, like a headlight or a beacon.</dd>
+        <dt>beam in the air · beam length</dt><dd>A visible cone of light, as in dust or fog.</dd>
+      </dl>
+      <dl class="defs l-ru">
+        <dt>color · intensity</dt><dd>Цвет (щелчок по образцу — палитра и смеситель) и яркость.</dd>
+        <dt>distance · fieldOfView</dt><dd>Дальность света; угол конуса прожектора.</dd>
+        <dt>edge softness</dt><dd>0 — маска как есть, 1 — свет плавно гаснет от центра к краю.</dd>
+        <dt>source size</dt><dd>Размер лампы: чем больше, тем мягче тень, размывающаяся с расстоянием (полутень). Считается в рендере и его превью.</dd>
+        <dt>castsShadows · shadowFilterSize</dt><dd>Тени вкл/выкл и размытие их края.</dd>
+        <dt>shadowDepthBias · shadowSlopeBias</dt><dd>Увеличьте, если на освещённых поверхностях полосы; уменьшите, если тень отрывается от объекта.</dd>
+        <dt>nearZ</dt><dd>Свет начинается на этом расстоянии от источника.</dd>
+        <dt>orthographic · orthoSize</dt><dd>Параллельный квадратный луч как солнце: тени не меняют размер с расстоянием.</dd>
+        <dt>constant / linear / quadratic attenuation</dt><dd>Затухание с расстоянием. Квадратичное — как у настоящей лампы; постоянное — не затухает вовсе (для дальних объектов).</dd>
+        <dt>texture (light mask)</dt><dd>Форма луча: мягкие маски SPeditor (софтбокс, полоса, круг, кольцо, окно, жалюзи, решётка, щель, листва, закат…), текстуры инструмента Lamp, другие текстуры игры или любая текстура по пути.</dd>
+        <dt>glow size · glow brightness</dt><dd>Видимое свечение вокруг источника, как у фары или маячка.</dd>
+        <dt>beam in the air · beam length</dt><dd>Видимый конус света, как в пыли или тумане.</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="warn l-en"><p>Every shadow-casting spot light costs FPS. The <a href="#shadows">Shadows tab</a> limits how many of them cast shadows at once. Penumbra (<em>source size</em>) is only calculated in the render; the viewports show a sharp shadow.</p></div>
+  <div class="warn l-ru"><p>Каждый прожектор с тенями стоит FPS. <a href="#shadows">Вкладка Shadows</a> ограничивает, сколько из них отбрасывают тени одновременно. Полутень (<em>source size</em>) считается только в рендере; во вьюпортах тень резкая.</p></div>
+</section>
+
+<!-- ============================================================ SHADOWS -->
+<section class="page" id="pg-shadows" data-group="scene" data-en="Shadows" data-ru="Тени">
+  <h1><span class="l-en">Shadows</span><span class="l-ru">Тени</span></h1>
+  <p class="lede l-en">The Shadows tab of the bottom window controls two different things: shadows of the editor's spot lights and the simple prop shadows the map's own lighting casts.</p>
+  <p class="lede l-ru">Вкладка Shadows нижнего окна управляет двумя разными вещами: тенями прожекторов редактора и простыми тенями пропов от освещения самой карты.</p>
+  <figure><img src="img/30_shadows.jpg" alt="Shadows tab"></figure>
+
+  <h2><span class="l-en">Shadows from spot lights</span><span class="l-ru">Тени от прожекторов</span></h2>
+  <dl class="defs l-en">
+    <dt>Spot lights cast shadows</dt><dd>The master switch.</dd>
+    <dt>Shadow map quality</dt><dd>Low, Medium, High, Ultra. The engine reads it at start: after a change you may need <code>vid_restart</code> or the launch option <code>+r_flashlightdepthres 2048</code>.</dd>
+    <dt>Max shadow-casting lights</dt><dd>Only the N lights nearest to the camera cast shadows. The line below shows how many cast now.</dd>
+    <dt>Shadow draw distance</dt><dd>A light whose lit area is farther than this casts no shadow (0 = unlimited). Saves FPS in large scenes.</dd>
+    <dt>Softness multiplier</dt><dd>Multiplies the edge blur of every light.</dd>
+    <dt>Slope bias (global)</dt><dd>Removes stripes on surfaces lit at a shallow angle; each light can override it.</dd>
+  </dl>
+  <dl class="defs l-ru">
+    <dt>Spot lights cast shadows</dt><dd>Общий выключатель.</dd>
+    <dt>Shadow map quality</dt><dd>Low, Medium, High, Ultra. Движок читает значение при запуске: после изменения может понадобиться <code>vid_restart</code> или параметр запуска <code>+r_flashlightdepthres 2048</code>.</dd>
+    <dt>Max shadow-casting lights</dt><dd>Тени отбрасывают только N ближайших к камере источников. Строка ниже показывает, сколько их сейчас.</dd>
+    <dt>Shadow draw distance</dt><dd>Источник, освещённая область которого дальше этого расстояния, теней не даёт (0 — без ограничения). Экономит FPS в больших сценах.</dd>
+    <dt>Softness multiplier</dt><dd>Умножает размытие края тени у всех источников.</dd>
+    <dt>Slope bias (global)</dt><dd>Убирает полосы на поверхностях, освещённых под острым углом; у каждого источника может быть своё значение.</dd>
+  </dl>
+
+  <h2><span class="l-en">Prop shadows from map lighting</span><span class="l-ru">Тени пропов от освещения карты</span></h2>
+  <p class="l-en">These are the soft blobs or silhouettes that props and ragdolls drop from the map's sun. <em>Draw prop shadows</em>, <em>Detailed shadows instead of blobs</em> and <em>Max prop shadows drawn</em> are local engine settings. Length, colour and direction belong to the map: tick <em>Override map shadow settings</em> to change them (this affects every player on a server; untick to restore). <em>Disable prop shadows on the map</em> removes them entirely.</p>
+  <p class="l-ru">Это мягкие пятна или силуэты, которые пропы и рэгдоллы отбрасывают от солнца карты. <em>Draw prop shadows</em>, <em>Detailed shadows instead of blobs</em> и <em>Max prop shadows drawn</em> — локальные настройки движка. Длина, цвет и направление принадлежат карте: отметьте <em>Override map shadow settings</em>, чтобы их менять (на сервере это действует на всех игроков; снимите отметку, чтобы вернуть). <em>Disable prop shadows on the map</em> убирает их совсем.</p>
+</section>
+
+<!-- ============================================================ CAMERAS -->
+<section class="page" id="pg-cameras" data-group="scene" data-en="Cameras" data-ru="Камеры">
+  <h1><span class="l-en">Cameras</span><span class="l-ru">Камеры</span></h1>
+  <p class="lede l-en">Scene cameras are objects of the scene. A render is always taken through a scene camera (or through the Primary Viewport), and camera effects belong to scene cameras.</p>
+  <p class="lede l-ru">Камеры сцены — объекты сцены. Рендер всегда снимается через камеру сцены (или через Primary Viewport), а эффекты камеры принадлежат камерам сцены.</p>
+
+  <h2><span class="l-en">Creating and aiming</span><span class="l-ru">Создание и наведение</span></h2>
+  <ul class="l-en">
+    <li><span class="ui plain">+</span> → <span class="ui">Spawn Camera</span> creates a camera exactly at the work camera's position and angle.</li>
+    <li><strong>Match camera to work view</strong> (object menu) moves an existing camera to where you look now.</li>
+    <li><strong>Aim camera at object…</strong> turns it towards any object.</li>
+    <li>Move and rotate it with the gizmo like any object.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><span class="ui plain">+</span> → <span class="ui">Spawn Camera</span> создаёт камеру точно в позиции и под углом рабочей камеры.</li>
+    <li><strong>Match camera to work view</strong> (меню объекта) переносит существующую камеру туда, куда вы сейчас смотрите.</li>
+    <li><strong>Aim camera at object…</strong> поворачивает её к любому объекту.</li>
+    <li>Двигайте и вращайте её гизмо, как любой объект.</li>
+  </ul>
+
+  <h2><span class="l-en">Looking through a camera</span><span class="l-ru">Взгляд через камеру</span></h2>
+  <div class="row">
+    <figure><img src="img/44_camera_view.jpg" alt="Primary Viewport looking through Demo camera"></figure>
+    <div style="flex:1 1 260px;min-width:0">
+      <p class="l-en">Select a camera and press <kbd>V</kbd>, choose it in the viewport's camera list, or tick <em>Look through this camera</em>. The header then shows the camera name. Flying with <kbd>RMB</kbd>+<kbd>WASD</kbd> now moves the scene camera itself — the fastest way to frame a shot. <kbd>V</kbd> goes back to the work camera.</p>
+      <p class="l-ru">Выделите камеру и нажмите <kbd>V</kbd>, выберите её в списке камер вьюпорта или отметьте <em>Look through this camera</em>. В заголовке появится имя камеры. Полёт с <kbd>ПКМ</kbd>+<kbd>WASD</kbd> теперь двигает саму камеру сцены — самый быстрый способ выстроить кадр. <kbd>V</kbd> возвращает рабочую камеру.</p>
+    </div>
+  </div>
+
+  <h2><span class="l-en">Camera settings</span><span class="l-ru">Настройки камеры</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/43_camera_controls.jpg" alt="Camera controls" style="--w:220px"></figure>
+    <dl class="defs l-en" style="flex:1 1 300px">
+      <dt>Lenses</dt><dd>Ready focal lengths: 18 mm (90°), 24 mm (74°), 35 mm (54°), 50 mm (40°) and longer.</dd>
+      <dt>fieldOfView</dt><dd>Any angle.</dd>
+      <dt>Shake, units / degrees</dt><dd>How far the camera is thrown about and turned. A small value gives a handheld camera.</dd>
+      <dt>Shake speed</dt><dd>Shakes per second: 1–2 handheld, 8+ an explosion or an engine.</dd>
+      <dt>Smoothness, s</dt><dd>In an animation the camera floats through its keys instead of stopping at each one.</dd>
+    </dl>
+    <dl class="defs l-ru" style="flex:1 1 300px">
+      <dt>Lenses</dt><dd>Готовые фокусные расстояния: 18 мм (90°), 24 мм (74°), 35 мм (54°), 50 мм (40°) и длиннее.</dd>
+      <dt>fieldOfView</dt><dd>Любой угол.</dd>
+      <dt>Shake, units / degrees</dt><dd>Насколько камеру бросает и поворачивает. Малое значение — съёмка с рук.</dd>
+      <dt>Shake speed</dt><dd>Толчков в секунду: 1–2 — с рук, от 8 — взрыв или двигатель.</dd>
+      <dt>Smoothness, s</dt><dd>В анимации камера плавно проходит через ключи, не останавливаясь на каждом.</dd>
+    </dl>
+  </div>
+  <p class="l-en">A camera's own <strong>depth of field</strong> (focus distance, aperture, quality) and <strong>exposure</strong>, as in SFM, are set in the Render window under <em>Camera effects → Camera (as in SFM)</em>. See <a href="#render">Rendering</a>.</p>
+  <p class="l-ru">Собственная <strong>глубина резкости</strong> камеры (дистанция фокуса, диафрагма, качество) и <strong>экспозиция</strong>, как в SFM, задаются в окне рендера в разделе <em>Camera effects → Camera (as in SFM)</em>. См. <a href="#render">Рендер</a>.</p>
+</section>
+
+<!-- ============================================================ EFFECTS -->
+<section class="page" id="pg-effects" data-group="scene" data-en="Effects" data-ru="Эффекты">
+  <h1><span class="l-en">Effects</span><span class="l-ru">Эффекты</span></h1>
+  <p class="lede l-en">Explosions, fire, smoke, blood, sparks and muzzle flashes are objects too. A particle effect can be stopped at any moment and stays frozen in the viewport and in the render.</p>
+  <p class="lede l-ru">Взрывы, огонь, дым, кровь, искры и вспышки выстрелов — тоже объекты. Эффект частиц можно остановить в любой момент, и он остаётся застывшим во вьюпорте и в рендере.</p>
+  <figure>
+    <img src="img/17_effect_browser.jpg" alt="Effect Browser">
+    <figcaption class="l-en"><b>Effect Browser</b> (<span class="ui plain">+</span> → <span class="ui">Add an effect…</span>). Groups on the left, effects and the file they come from on the right. Double-click adds the effect to the scene.</figcaption>
+    <figcaption class="l-ru"><b>Браузер эффектов</b> (<span class="ui plain">+</span> → <span class="ui">Add an effect…</span>). Слева группы, справа эффекты и файл, из которого они взяты. Двойной щелчок добавляет эффект в сцену.</figcaption>
+  </figure>
+
+  <h2><span class="l-en">Kinds of effects</span><span class="l-ru">Виды эффектов</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Group</span><span class="l-ru">Группа</span></th><th><span class="l-en">Can be frozen</span><span class="l-ru">Можно остановить</span></th><th><span class="l-en">Notes</span><span class="l-ru">Заметки</span></th></tr>
+    <tr><td>Particles of the game / of addons</td><td>✓</td><td class="wrap"><span class="l-en">The best choice for stills and frame-by-frame video. Includes every particle file of installed Workshop addons.</span><span class="l-ru">Лучший выбор для статичных кадров и покадрового видео. Включает все файлы частиц установленных аддонов.</span></td></tr>
+    <tr><td>Emitter tool effects</td><td>—</td><td class="wrap"><span class="l-en">Play by themselves; a still render starts them and waits for the chosen moment.</span><span class="l-ru">Играют сами; рендер кадра запускает их и ждёт выбранного момента.</span></td></tr>
+    <tr><td>Engine effects · Lua effects</td><td>—</td><td class="wrap"><span class="l-en">Some need a weapon or a character and show nothing alone.</span><span class="l-ru">Некоторым нужно оружие или персонаж, без них они ничего не показывают.</span></td></tr>
+  </table></div>
+
+  <h2><span class="l-en">Effect settings</span><span class="l-ru">Настройки эффекта</span></h2>
+  <dl class="defs l-en">
+    <dt>Moment, s</dt><dd>How long after its start the effect is shown. 0 means it has not started yet. After a move or a change of the moment the effect is replayed up to that moment, which takes as long as the moment itself.</dd>
+    <dt>Size</dt><dd>Scale of the effect (not every effect uses it).</dd>
+    <dt>Length</dt><dd>Distance to the second point: where a tracer or a beam goes. 0 means a one-point effect.</dd>
+  </dl>
+  <dl class="defs l-ru">
+    <dt>Moment, s</dt><dd>Через сколько секунд после начала показан эффект. 0 — он ещё не начался. После перемещения или смены момента эффект проигрывается заново до этого момента — это занимает столько же времени, сколько сам момент.</dd>
+    <dt>Size</dt><dd>Масштаб эффекта (используют не все эффекты).</dd>
+    <dt>Length</dt><dd>Расстояние до второй точки: куда летит трассер или луч. 0 — эффект из одной точки.</dd>
+  </dl>
+  <p class="l-en">Effects can be attached to an object or a bone (a flash on a muzzle), duplicated, hidden, aimed and saved with the scene. In SAeditor, <strong>Play the effect from this frame</strong> keys the moment for you.</p>
+  <p class="l-ru">Эффекты можно привязать к объекту или кости (вспышка на стволе), дублировать, скрывать, наводить и сохранять в сцене. В SAeditor пункт <strong>Play the effect from this frame</strong> сам расставляет ключи момента.</p>
+  <div class="warn l-en"><p>An effect advances one game frame at a time. Render animations with the game window focused: an unfocused game runs at about 20 FPS, and effects shorter than a frame (a muzzle flash lasts ~0.03 s) may not show.</p></div>
+  <div class="warn l-ru"><p>Эффект продвигается на один игровой кадр за раз. Рендерите анимации, когда окно игры в фокусе: без фокуса игра идёт примерно на 20 FPS, и эффекты короче кадра (вспышка выстрела длится ~0,03 с) могут не показаться.</p></div>
+</section>
+
+<!-- ============================================================ RENDER -->
+<section class="page" id="pg-render" data-group="output" data-en="Rendering" data-ru="Рендер">
+  <h1><span class="l-en">Rendering</span><span class="l-ru">Рендер</span></h1>
+  <p class="lede l-en">The Render window turns the scene into a picture. It renders off-screen, so the interface never gets into the file, and shows a live preview of exactly what you will get.</p>
+  <p class="lede l-ru">Окно Render превращает сцену в картинку. Рендер идёт вне экрана, поэтому интерфейс никогда не попадает в файл, а живое превью показывает ровно то, что получится.</p>
+  <p class="l-en">Open it with the <span class="ui">Render</span> button at the top right, <span class="ui">File → Render…</span> or the viewport gear menu.</p>
+  <p class="l-ru">Откройте его кнопкой <span class="ui">Render</span> справа вверху, через <span class="ui">File → Render…</span> или меню-шестерёнку вьюпорта.</p>
+  <figure>
+    <img src="img/47_render_lights.jpg" alt="Render window, still scene">
+    <figcaption class="l-en"><b>The Render window for a still scene.</b> Settings on the left, the preview on the right. The preview grows with the window.</figcaption>
+    <figcaption class="l-ru"><b>Окно рендера для статичной сцены.</b> Слева настройки, справа превью. Превью растёт вместе с окном.</figcaption>
+  </figure>
+
+  <h2><span class="l-en">Settings</span><span class="l-ru">Настройки</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Setting</span><span class="l-ru">Настройка</span></th><th><span class="l-en">Meaning</span><span class="l-ru">Значение</span></th></tr>
+    <tr><td>Camera</td><td class="wrap"><span class="l-en">A scene camera, or <em>Primary Viewport source</em> (whatever the Primary Viewport shows).</span><span class="l-ru">Камера сцены или <em>Primary Viewport source</em> (то, что показывает главный вьюпорт).</span></td></tr>
+    <tr><td>Frame aspect</td><td class="wrap"><span class="l-en">Free (the viewport's shape), 2:3 poster, A-series paper and other ratios.</span><span class="l-ru">Free (форма вьюпорта), 2:3 постер, формат A и другие пропорции.</span></td></tr>
+    <tr><td>Render size (long side)</td><td class="wrap"><span class="l-en">The long side of the picture, up to 3840 px. <em>Custom size</em> sets width × height exactly. <em>Output size</em> shows the result.</span><span class="l-ru">Длинная сторона картинки, до 3840 px. <em>Custom size</em> задаёт ширину × высоту точно. <em>Output size</em> показывает итог.</span></td></tr>
+    <tr><td>Fullbright (render only)</td><td class="wrap"><span class="l-en">Render without lighting.</span><span class="l-ru">Рендер без освещения.</span></td></tr>
+    <tr><td>Smoothing</td><td class="wrap"><span class="l-en">Renders at 2× and scales down: clean edges.</span><span class="l-ru">Рендер в 2× и уменьшение: чистые края.</span></td></tr>
+    <tr><td>Depth of field</td><td class="wrap"><span class="l-en">Focus on the selection or the frame centre; <em>Blur amount</em> (aperture) and <em>DoF quality</em> (passes).</span><span class="l-ru">Фокус на выделении или центре кадра; <em>Blur amount</em> (диафрагма) и <em>DoF quality</em> (проходы).</span></td></tr>
+    <tr><td>Soft shadows (passes)</td><td class="wrap"><span class="l-en">How many times the scene is rendered for lights with a <em>source size</em>. More passes, smoother penumbra, longer render.</span><span class="l-ru">Сколько раз сцена рендерится для источников с <em>source size</em>. Больше проходов — плавнее полутень, дольше рендер.</span></td></tr>
+    <tr><td>Engine frame</td><td class="wrap"><span class="l-en">Lets the game's own renderer draw the picture so that post-processing addons and Workshop shaders get in. See <a href="#shaders">Shaders</a>.</span><span class="l-ru">Картинку рисует сам рендерер игры, и в неё попадают аддоны постобработки и шейдеры Workshop. См. <a href="#shaders">Шейдеры</a>.</span></td></tr>
+    <tr><td>Format · JPEG quality</td><td class="wrap"><span class="l-en">PNG (lossless) or JPEG.</span><span class="l-ru">PNG (без потерь) или JPEG.</span></td></tr>
+    <tr><td>File name</td><td class="wrap"><span class="l-en">Empty means date and time. Files go to <code>data/speditor/renders/</code>.</span><span class="l-ru">Пусто — дата и время. Файлы попадают в <code>data/speditor/renders/</code>.</span></td></tr>
+  </table></div>
+  <div class="warn l-en"><p>Close the ESC menu while rendering. A large render with depth of field and soft shadows can take a while — the preview shows the progress (“DoF preview: 12 of 96 samples”).</p></div>
+  <div class="warn l-ru"><p>Закройте меню ESC во время рендера. Большой рендер с глубиной резкости и мягкими тенями может занять время — превью показывает прогресс («DoF preview: 12 of 96 samples»).</p></div>
+
+  <h2><span class="l-en">Camera effects</span><span class="l-ru">Эффекты камеры</span></h2>
+  <figure>
+    <img src="img/23_render_fx2.jpg" alt="Camera effects list">
+    <figcaption class="l-en"><b>Camera effects</b> at the bottom of the settings. They belong to the chosen scene camera and are saved with it.</figcaption>
+    <figcaption class="l-ru"><b>Эффекты камеры</b> внизу настроек. Они принадлежат выбранной камере сцены и сохраняются вместе с ней.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Section</span><span class="l-ru">Раздел</span></th><th><span class="l-en">Effects</span><span class="l-ru">Эффекты</span></th></tr>
+    <tr><td>Camera (as in SFM)</td><td class="wrap"><span class="l-en">Depth of field of this camera (focus distance, aperture, quality) · Exposure (tone map scale)</span><span class="l-ru">Глубина резкости этой камеры (дистанция фокуса, диафрагма, качество) · Экспозиция (tone map scale)</span></td></tr>
+    <tr><td>Lens</td><td class="wrap"><span class="l-en">Fisheye (strength) · Vignette (strength, clear radius)</span><span class="l-ru">Fisheye (сила) · Vignette (сила, чистый радиус)</span></td></tr>
+    <tr><td>Tone and colour</td><td class="wrap"><span class="l-en">Curves for RGB and each channel (click to add a point, drag to move, right-click to remove) · HDR</span><span class="l-ru">Кривые для RGB и каждого канала (щелчок — точка, перетаскивание — сдвиг, правый щелчок — удалить) · HDR</span></td></tr>
+    <tr><td>Shaders</td><td class="wrap">Bloom · Sharpen · Sobel (outlines) · Toy Town</td></tr>
+    <tr><td>Custom shaders</td><td class="wrap"><span class="l-en">Up to three shader materials from the Workshop, addons or the shader folder</span><span class="l-ru">До трёх шейдерных материалов из Workshop, аддонов или папки шейдеров</span></td></tr>
+    <tr><td>Texturize · Overlay</td><td class="wrap"><span class="l-en">A texture pattern over the picture · any material over the picture</span><span class="l-ru">Текстурный узор поверх картинки · любой материал поверх картинки</span></td></tr>
+  </table></div>
+  <p class="l-en">The effects show in the preview and in the final render; the viewports stay clean. The work camera has no effects — choose a scene camera. <em>Turn all effects off</em> resets them.</p>
+  <p class="l-ru">Эффекты видны в превью и в итоговом рендере; вьюпорты остаются чистыми. У рабочей камеры эффектов нет — выберите камеру сцены. <em>Turn all effects off</em> сбрасывает их.</p>
+
+  <h2><span class="l-en">Animated scenes</span><span class="l-ru">Анимированные сцены</span></h2>
+  <figure>
+    <img src="img/21_render.jpg" alt="Render window, animated scene">
+    <figcaption class="l-en"><b>When the scene has an animation</b> the window starts with SAeditor settings: whole animation or the current frame, video format, video size and passes, and a player under the preview.</figcaption>
+    <figcaption class="l-ru"><b>Если в сцене есть анимация</b>, окно начинается с настроек SAeditor: вся анимация или текущий кадр, формат и размер видео, проходы, а под превью — плеер.</figcaption>
+  </figure>
+  <p class="l-en">See <a href="#sa-render">Animation → Video</a> for the formats.</p>
+  <p class="l-ru">Форматы описаны в разделе <a href="#sa-render">Анимация → Видео</a>.</p>
+  <div class="tip l-en"><p><code>speditor_render</code> in the console renders with the current settings — bind it to a key for quick test shots.</p></div>
+  <div class="tip l-ru"><p><code>speditor_render</code> в консоли рендерит с текущими настройками — привяжите к клавише для быстрых пробных кадров.</p></div>
+</section>
+
+<!-- ============================================================ SHADERS -->
+<section class="page" id="pg-shaders" data-group="output" data-en="Workshop shaders" data-ru="Шейдеры Workshop">
+  <h1><span class="l-en">Workshop shaders</span><span class="l-ru">Шейдеры Workshop</span></h1>
+  <p class="lede l-en">Post-processing addons and shader packs from the Workshop can get into your renders in two ways: through <strong>Engine frame</strong> or as <strong>custom shaders</strong>.</p>
+  <p class="lede l-ru">Аддоны постобработки и шейдерные паки из Workshop попадают в рендер двумя путями: через <strong>Engine frame</strong> или как <strong>пользовательские шейдеры</strong>.</p>
+  <figure>
+    <img src="img/24_shaders.jpg" alt="Addon shaders window">
+    <figcaption class="l-en"><b>Windows → Addon shaders.</b> Every post-processing effect registered in the game, with its category. Double-click turns an effect on or off; its own settings panel appears on the right.</figcaption>
+    <figcaption class="l-ru"><b>Windows → Addon shaders.</b> Все эффекты постобработки, зарегистрированные в игре, с категориями. Двойной щелчок включает или выключает эффект; справа появляется его собственная панель настроек.</figcaption>
+  </figure>
+  <h2>Engine frame</h2>
+  <p class="l-en">Tick <em>Engine frame</em> in the Render window. The picture is then drawn by the game's renderer through the chosen camera with every enabled effect — standard GMod effects, Workshop shaders and shaders built on GShader Library — and taken from the screen.</p>
+  <p class="l-ru">Отметьте <em>Engine frame</em> в окне рендера. Тогда картинку рисует рендерер игры через выбранную камеру со всеми включёнными эффектами — стандартными эффектами GMod, шейдерами Workshop и шейдерами на GShader Library — и снимает её с экрана.</p>
+  <div class="warn l-en"><p>Engine frame limits: the picture is no larger than the screen, and 2× smoothing, penumbra and the editor's depth of field are not applied. The Render window shows the source size, e.g. “source: 1494 × 1080 px of the screen”.</p></div>
+  <div class="warn l-ru"><p>Ограничения Engine frame: картинка не больше экрана, 2× сглаживание, полутень и глубина резкости редактора не применяются. Окно рендера показывает исходный размер, например «source: 1494 × 1080 px of the screen».</p></div>
+  <h2><span class="l-en">The shader folder</span><span class="l-ru">Папка шейдеров</span></h2>
+  <p class="l-en">The <em>Shader folder</em> tab of the same window: put a downloaded shader pack (with <code>materials/</code> and <code>shaders/fxc/</code>, or loose <code>.vmt</code> and <code>.vcs</code> files) into <code>garrysmod/addons/speditor/shaders/</code> (create the folder if it is missing) and press <em>Rescan</em>. The pack is mounted without restarting the game, and its shaders appear in <em>Camera effects → Custom shader</em>. Lua from a pack is not run: addons with Lua are installed the usual way and work through Engine frame.</p>
+  <p class="l-ru">Вкладка <em>Shader folder</em> того же окна: положите скачанный пак (с <code>materials/</code> и <code>shaders/fxc/</code> или просто файлы <code>.vmt</code> и <code>.vcs</code>) в <code>garrysmod/addons/speditor/shaders/</code> (создайте папку, если её нет) и нажмите <em>Rescan</em>. Пак подключается без перезапуска игры, а его шейдеры появляются в <em>Camera effects → Custom shader</em>. Lua из пака не запускается: аддоны с Lua ставятся обычным способом и работают через Engine frame.</p>
+  <div class="note l-en"><p>On Linux the folder name and the files inside must be lowercase, otherwise the game cannot read them.</p></div>
+  <div class="note l-ru"><p>На Linux имя папки и файлов внутри должно быть в нижнем регистре, иначе игра не сможет их прочитать.</p></div>
+</section>
+
+<!-- ============================================================ SA BASICS -->
+<section class="page" id="pg-sa-basics" data-group="anim" data-en="Keys and the timeline" data-ru="Ключи и таймлайн">
+  <h1><span class="l-en">Animation: keys and the timeline</span><span class="l-ru">Анимация: ключи и таймлайн</span></h1>
+  <p class="lede l-en">SAeditor is the animation mod that comes with SPeditor. It adds the <strong>Timeline</strong> tab to the bottom window. You set keys — full snapshots of an object at a frame — and SAeditor calculates the motion between them.</p>
+  <p class="lede l-ru">SAeditor — мод анимации, который идёт вместе с SPeditor. Он добавляет вкладку <strong>Timeline</strong> в нижнее окно. Вы ставите ключи — полные снимки объекта в кадре, — а движение между ними SAeditor считает сам.</p>
+  <figure>
+    <img src="img/18_timeline.jpg" alt="SAeditor timeline">
+    <figcaption class="l-en"><b>The timeline of the example scene.</b> One row per animated object. Diamonds are keys; dense marks are baked animations (a key every frame or two). The orange line is the playhead.</figcaption>
+    <figcaption class="l-ru"><b>Таймлайн сцены-примера.</b> По строке на каждый анимированный объект. Ромбы — ключи; плотные штрихи — запечённые анимации (ключ каждый кадр или два). Оранжевая линия — указатель кадра.</figcaption>
+  </figure>
+
+  <h2><span class="l-en">Your first animation</span><span class="l-ru">Первая анимация</span></h2>
+  <ol class="steps l-en">
+    <li>Select an object, leave the playhead on frame 0 and press <kbd>K</kbd>. A key appears in the object's row.</li>
+    <li>Move the playhead (click the ruler or press <kbd>.</kbd> several times), change the object — move it, change the pose, the light colour, the camera angle — and press <kbd>K</kbd> again.</li>
+    <li>Press <kbd>Space</kbd> to play. Between the keys everything is interpolated.</li>
+  </ol>
+  <ol class="steps l-ru">
+    <li>Выделите объект, оставьте указатель на кадре 0 и нажмите <kbd>K</kbd>. В строке объекта появится ключ.</li>
+    <li>Передвиньте указатель (щёлкните по линейке или несколько раз нажмите <kbd>.</kbd>), измените объект — сдвиньте, смените позу, цвет света, угол камеры — и снова нажмите <kbd>K</kbd>.</li>
+    <li>Нажмите <kbd>Space</kbd>, чтобы проиграть. Между ключами всё интерполируется.</li>
+  </ol>
+  <p class="l-en">A key remembers everything about the object: position, physics pose, bone offsets (scale too), face flexes, colour and opacity, light settings, camera FOV and shake, the moment of an effect, and <span class="badge new">new</span> skin and bodygroups (they switch at the key instead of blending).</p>
+  <p class="l-ru">Ключ помнит об объекте всё: позицию, физическую позу, смещения костей (и масштаб), мимику, цвет и прозрачность, настройки света, FOV и тряску камеры, момент эффекта, а также <span class="badge new">new</span> скин и бодигруппы (они переключаются на ключе, а не смешиваются).</p>
+
+  <h2><span class="l-en">The toolbar</span><span class="l-ru">Панель инструментов</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Control</span><span class="l-ru">Элемент</span></th><th><span class="l-en">Action</span><span class="l-ru">Действие</span></th></tr>
+    <tr><td><span class="l-en">Transport buttons</span><span class="l-ru">Кнопки плеера</span></td><td class="wrap"><span class="l-en">First frame (<kbd>Home</kbd>), previous key, play / pause (<kbd>Space</kbd>), next key, last frame (<kbd>End</kbd>), loop playback.</span><span class="l-ru">Первый кадр (<kbd>Home</kbd>), предыдущий ключ, воспроизведение / пауза (<kbd>Space</kbd>), следующий ключ, последний кадр (<kbd>End</kbd>), зацикливание.</span></td></tr>
+    <tr><td>frame</td><td class="wrap"><span class="l-en">Current frame; type a number to jump. Next to it: total frames and time.</span><span class="l-ru">Текущий кадр; введите число, чтобы перейти. Рядом — всего кадров и время.</span></td></tr>
+    <tr><td>fps · length, s</td><td class="wrap"><span class="l-en">Frame rate (12, 15, 24, 30, 60) and length in seconds (up to 3600 frames).</span><span class="l-ru">Частота кадров (12, 15, 24, 30, 60) и длина в секундах (до 3600 кадров).</span></td></tr>
+    <tr><td><span class="l-en">Key buttons</span><span class="l-ru">Кнопки ключей</span></td><td class="wrap"><span class="l-en">Set key for the selection (<kbd>K</kbd>), set key for every object, delete key, <strong>Auto key</strong> (the red dot: every edit sets a key at the current frame; the status bar shows AUTO KEY).</span><span class="l-ru">Ключ для выделения (<kbd>K</kbd>), ключ для всех объектов, удалить ключ, <strong>Auto key</strong> (красная точка: каждое изменение ставит ключ на текущем кадре; в строке состояния — AUTO KEY).</span></td></tr>
+    <tr><td><span class="l-en">Right buttons</span><span class="l-ru">Кнопки справа</span></td><td class="wrap"><span class="l-en">Import model animation, add a sound, render animation.</span><span class="l-ru">Импорт анимации модели, добавить звук, рендер анимации.</span></td></tr>
+  </table></div>
+
+  <h2><span class="l-en">Working with keys</span><span class="l-ru">Работа с ключами</span></h2>
+  <ul class="l-en">
+    <li><kbd>LMB</kbd> on a key selects it and moves the playhead there; drag to move it; <kbd>Ctrl</kbd> + drag copies it.</li>
+    <li><kbd>RMB</kbd> on a key: <em>Motion to the next key</em> — <strong>Smooth</strong> (ease in and out), <strong>Linear</strong> or <strong>Hold</strong> (jump: the value holds until the next key, used for cuts between shots); <em>Copy key</em>; <em>Delete key</em>.</li>
+    <li><kbd>RMB</kbd> on an empty place of a row: <em>Set key here</em>, <em>Paste key here</em>, <em>Remove animation of this object</em>.</li>
+    <li><kbd>LMB</kbd> on the ruler or empty space moves the playhead; drag to scrub. The wheel scrolls the list of objects.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><kbd>ЛКМ</kbd> по ключу выделяет его и переносит туда указатель; перетаскивание двигает ключ; <kbd>Ctrl</kbd> + перетаскивание копирует.</li>
+    <li><kbd>ПКМ</kbd> по ключу: <em>Motion to the next key</em> — <strong>Smooth</strong> (плавный разгон и торможение), <strong>Linear</strong> или <strong>Hold</strong> (скачок: значение держится до следующего ключа, для склеек между планами); <em>Copy key</em>; <em>Delete key</em>.</li>
+    <li><kbd>ПКМ</kbd> по пустому месту строки: <em>Set key here</em>, <em>Paste key here</em>, <em>Remove animation of this object</em>.</li>
+    <li><kbd>ЛКМ</kbd> по линейке или пустому месту двигает указатель; перетаскивание — прокрутка. Колесо прокручивает список объектов.</li>
+  </ul>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Key</span><span class="l-ru">Клавиша</span></th><th><span class="l-en">Action</span><span class="l-ru">Действие</span></th></tr>
+    <tr><td><kbd>Space</kbd></td><td><span class="l-en">Play / pause</span><span class="l-ru">Воспроизведение / пауза</span></td></tr>
+    <tr><td><kbd>K</kbd></td><td><span class="l-en">Set a key for the selection</span><span class="l-ru">Ключ для выделения</span></td></tr>
+    <tr><td><kbd>,</kbd> / <kbd>.</kbd></td><td><span class="l-en">Previous / next frame</span><span class="l-ru">Предыдущий / следующий кадр</span></td></tr>
+    <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td><span class="l-en">First / last frame</span><span class="l-ru">Первый / последний кадр</span></td></tr>
+  </table></div>
+  <div class="note l-en"><p>The animation is stored with the scene: <span class="ui">File → Save Scene…</span> saves it too. Physics poses are set on the server, so playback is smooth in singleplayer and on a listen server; on a busy dedicated server it depends on the network.</p></div>
+  <div class="note l-ru"><p>Анимация хранится вместе со сценой: <span class="ui">File → Save Scene…</span> сохраняет и её. Физические позы задаются на сервере, поэтому воспроизведение плавное в одиночной игре и на своём сервере; на загруженном выделенном сервере зависит от сети.</p></div>
+</section>
+
+<!-- ============================================================ SA IMPORT -->
+<section class="page" id="pg-sa-import" data-group="anim" data-en="Importing animations" data-ru="Импорт анимаций">
+  <h1><span class="l-en">Importing model animations</span><span class="l-ru">Импорт анимаций моделей</span></h1>
+  <p class="lede l-en">A character can get a ready-made animation — walking, running, gestures, dances — baked into keys. Right-click a character → <span class="ui">Animation → Import model animation…</span></p>
+  <p class="lede l-ru">Персонажу можно дать готовую анимацию — ходьбу, бег, жесты, танцы, — запечённую в ключи. Правый щелчок по персонажу → <span class="ui">Animation → Import model animation…</span></p>
+  <div class="row">
+    <figure class="fit"><img src="img/19_import.jpg" alt="Import model animation" style="--w:400px"></figure>
+    <div style="flex:1 1 300px;min-width:0">
+      <dl class="defs l-en">
+        <dt>Source list</dt><dd><em>Animations of this model</em>, <em>Player animations (male / female / zombie)</em> or <em>Animations of another model…</em> (type a path). Any model with the same skeleton works: a citizen can dance like a player model or use an animation pack made for players.</dd>
+        <dt>Search</dt><dd>Filter by name; the list shows each animation's length.</dd>
+        <dt>Key every N frames</dt><dd>1 is the most exact; 2–3 is lighter for long animations.</dd>
+        <dt>Repeats</dt><dd>Loop a walk cycle several times.</dd>
+        <dt>Speed</dt><dd>Play faster or slower.</dd>
+        <dt>Move the character along</dt><dd>Root motion: a walk moves the character forward instead of walking in place.</dd>
+      </dl>
+      <dl class="defs l-ru">
+        <dt>Источник</dt><dd><em>Animations of this model</em>, <em>Player animations (male / female / zombie)</em> или <em>Animations of another model…</em> (введите путь). Подходит любая модель с тем же скелетом: горожанин может танцевать как модель игрока или использовать пак анимаций для игроков.</dd>
+        <dt>Поиск</dt><dd>Фильтр по имени; в списке указана длина каждой анимации.</dd>
+        <dt>Key every N frames</dt><dd>1 — точнее всего; 2–3 — легче для длинных анимаций.</dd>
+        <dt>Repeats</dt><dd>Повторить цикл ходьбы несколько раз.</dd>
+        <dt>Speed</dt><dd>Быстрее или медленнее.</dd>
+        <dt>Move the character along</dt><dd>Root motion: при ходьбе персонаж движется вперёд, а не шагает на месте.</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="l-en">The animation starts at the current frame. If it is longer than the timeline, the timeline is lengthened. Select several characters first to give all of them the same animation — they move in step.</p>
+  <p class="l-ru">Анимация начинается с текущего кадра. Если она длиннее таймлайна, таймлайн удлиняется. Выделите сразу нескольких персонажей, чтобы дать всем одну анимацию — они будут двигаться синхронно.</p>
+  <h3><span class="l-en">Fingers</span><span class="l-ru">Пальцы</span> <span class="badge new">new</span></h3>
+  <p class="l-en">In a0.3 only bones with a physics body were imported, so fists, pointing and gripping hands stayed open. Since a0.4 the import also brings fingers, toes and clavicles as bone offsets: a fist animation clenches the fist.</p>
+  <p class="l-ru">В a0.3 импортировались только кости с физическим телом, поэтому кулаки, указывающие и сжимающие руки оставались раскрытыми. С a0.4 импортируются и пальцы, пальцы ног и ключицы — как смещения костей: анимация кулака сжимает кулак.</p>
+  <div class="warn l-en"><p>“This model has another skeleton” means the source model's bones do not match the character. Choose a source made for the same skeleton (most humans in GMod use ValveBiped).</p></div>
+  <div class="warn l-ru"><p>«This model has another skeleton» значит, что кости модели-источника не совпадают с персонажем. Выберите источник под тот же скелет (большинство людей в GMod используют ValveBiped).</p></div>
+</section>
+
+<!-- ============================================================ SA SOUNDS -->
+<section class="page" id="pg-sa-sounds" data-group="anim" data-en="Sounds and voices" data-ru="Звуки и голоса">
+  <h1><span class="l-en">Sounds and voices</span><span class="l-ru">Звуки и голоса</span></h1>
+  <p class="lede l-en">Sounds are placed on the timeline and played with the animation. A sound can come from an object (spatial), from a character's head (voice) or be heard everywhere (music, a narrator).</p>
+  <p class="lede l-ru">Звуки ставятся на таймлайн и играют вместе с анимацией. Звук может идти от объекта (пространственный), от головы персонажа (голос) или быть слышен везде (музыка, рассказчик).</p>
+  <div class="row">
+    <figure class="fit"><img src="img/20_sounds.jpg" alt="Sounds and voices window" style="--w:420px"></figure>
+    <div style="flex:1 1 280px;min-width:0">
+      <p class="l-en">Open it with <span class="ui">Animation → Add a sound or a voice line…</span> or the speaker button of the timeline.</p>
+      <p class="l-ru">Открывается через <span class="ui">Animation → Add a sound or a voice line…</span> или кнопку с динамиком на таймлайне.</p>
+      <ul class="l-en">
+        <li><strong>Game sounds</strong> browses the <code>sound/</code> folders of the game and addons; <strong>My files</strong> shows <code>garrysmod/data/speditor/sounds/</code> (WAV, MP3, OGG).</li>
+        <li><strong>Listen</strong> / <strong>Stop</strong> preview a file.</li>
+        <li><strong>Comes from the selected object</strong>: quieter with distance from the camera, moves between left and right.</li>
+        <li><strong>Voice</strong>: comes from the character's head (ticked by itself for files in <code>sound/vo/</code>).</li>
+        <li><strong>Add at the current frame</strong> or double-click a file.</li>
+      </ul>
+      <ul class="l-ru">
+        <li><strong>Game sounds</strong> — папки <code>sound/</code> игры и аддонов; <strong>My files</strong> — <code>garrysmod/data/speditor/sounds/</code> (WAV, MP3, OGG).</li>
+        <li><strong>Listen</strong> / <strong>Stop</strong> — прослушать файл.</li>
+        <li><strong>Comes from the selected object</strong>: тише с расстоянием от камеры, перемещается между левым и правым каналом.</li>
+        <li><strong>Voice</strong>: звучит от головы персонажа (включается само для файлов из <code>sound/vo/</code>).</li>
+        <li><strong>Add at the current frame</strong> или двойной щелчок по файлу.</li>
+      </ul>
+    </div>
+  </div>
+  <h2><span class="l-en">Sounds on the timeline</span><span class="l-ru">Звуки на таймлайне</span></h2>
+  <p class="l-en">Every sound is a blue bar under the objects; the same file from the same source shares one row (a burst of shots is one row). Drag a bar to move it in time. Right-click it for:</p>
+  <p class="l-ru">Каждый звук — синяя полоса под объектами; один файл от одного источника делит одну строку (очередь выстрелов — одна строка). Перетаскивайте полосу, чтобы сдвинуть её во времени. Правый щелчок открывает:</p>
+  <dl class="defs l-en">
+    <dt>Listen · Comes from · Voice</dt><dd>Preview; change the source object or make it heard everywhere; toggle voice.</dd>
+    <dt>Volume · Speed and pitch · Distance of full volume</dt><dd>10–200 %, 50–200 %, 50–2400 units.</dd>
+    <dt>Start at the current frame · Duplicate · Remove the sound</dt><dd>As named.</dd>
+  </dl>
+  <dl class="defs l-ru">
+    <dt>Listen · Comes from · Voice</dt><dd>Прослушать; сменить объект-источник или сделать слышимым везде; переключить голос.</dd>
+    <dt>Volume · Speed and pitch · Distance of full volume</dt><dd>10–200 %, 50–200 %, 50–2400 единиц.</dd>
+    <dt>Start at the current frame · Duplicate · Remove the sound</dt><dd>Начать с текущего кадра, дублировать, удалить.</dd>
+  </dl>
+  <h3><span class="l-en">Cutting and trimming</span><span class="l-ru">Разрезание и обрезка</span> <span class="badge new">new</span></h3>
+  <ul class="l-en">
+    <li><strong>Drag the left or right edge</strong> of a bar (the cursor becomes ↔) to cut off the start or the end of the sound. A trimmed side is marked with a light stripe.</li>
+    <li>Menu: <em>Cut in two at the playhead</em>, <em>Trim the start to the playhead</em>, <em>Trim the end to the playhead</em>, <em>Restore the whole sound</em>.</li>
+    <li>Trimming works in playback and in the video's sound track; a few milliseconds of fade at each cut prevent clicks.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Тяните левый или правый край</strong> полосы (курсор становится ↔), чтобы отрезать начало или конец звука. Обрезанная сторона отмечена светлой полоской.</li>
+    <li>Меню: <em>Разрезать по курсору</em>, <em>Обрезать начало до курсора</em>, <em>Обрезать конец от курсора</em>, <em>Вернуть звук целиком</em>.</li>
+    <li>Обрезка работает при воспроизведении и в звуковой дорожке видео; несколько миллисекунд затухания на срезе убирают щелчки.</li>
+  </ul>
+  <div class="warn l-en"><p>Only uncompressed WAV gets into the rendered video. MP3 and OGG play in the editor but are left out of the video (the render tells you which ones). Convert them to WAV first.</p></div>
+  <div class="warn l-ru"><p>В снятое видео попадает только несжатый WAV. MP3 и OGG играют в редакторе, но не попадают в видео (рендер сообщит, какие именно). Сначала переконвертируйте их в WAV.</p></div>
+</section>
+
+<!-- ============================================================ SA RENDER -->
+<section class="page" id="pg-sa-render" data-group="anim" data-en="Video" data-ru="Видео">
+  <h1><span class="l-en">Rendering an animation to video</span><span class="l-ru">Рендер анимации в видео</span></h1>
+  <p class="lede l-en">When the scene has an animation, the Render window offers <em>The whole animation</em> or <em>Only the current frame</em>, and a video format.</p>
+  <p class="lede l-ru">Если в сцене есть анимация, окно рендера предлагает <em>The whole animation</em> (всю анимацию) или <em>Only the current frame</em> (текущий кадр), а также формат видео.</p>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Format</span><span class="l-ru">Формат</span></th><th><span class="l-en">Result</span><span class="l-ru">Результат</span></th></tr>
+    <tr><td>AVI video (MJPEG)</td><td class="wrap"><span class="l-en">One file <code>renders/&lt;name&gt;.avi.dat</code> with sound. Remove <code>.dat</code> from the name — it is a regular AVI any player opens. A video over 1.9 GB continues in a second file.</span><span class="l-ru">Один файл <code>renders/&lt;имя&gt;.avi.dat</code> со звуком. Уберите <code>.dat</code> из имени — это обычный AVI, который откроет любой плеер. Видео больше 1,9 ГБ продолжается во втором файле.</span></td></tr>
+    <tr><td>JPEG frames</td><td class="wrap"><span class="l-en">Numbered frames in <code>renders/&lt;name&gt;/</code> plus a WAV sound track — for making MP4.</span><span class="l-ru">Пронумерованные кадры в <code>renders/&lt;имя&gt;/</code> и звуковая дорожка WAV — для сборки MP4.</span></td></tr>
+    <tr><td>PNG frames</td><td class="wrap"><span class="l-en">Lossless frames for a video editor.</span><span class="l-ru">Кадры без потерь для видеоредактора.</span></td></tr>
+  </table></div>
+  <dl class="defs l-en">
+    <dt>Video size</dt><dd>Five JPEG levels: Largest (100), Normal (90), smaller by 40 % (70), by 65 % (50), by 80 % (30). Frames that did not change are not written twice.</dd>
+    <dt>Shadow / DoF passes</dt><dd>All (as in a still), Half or Quarter — fewer passes render several times faster.</dd>
+  </dl>
+  <dl class="defs l-ru">
+    <dt>Video size</dt><dd>Пять уровней JPEG: Largest (100), Normal (90), меньше на 40 % (70), на 65 % (50), на 80 % (30). Неизменившиеся кадры не пишутся повторно.</dd>
+    <dt>Shadow / DoF passes</dt><dd>All (как в статичном кадре), Half или Quarter — меньше проходов, в несколько раз быстрее.</dd>
+  </dl>
+  <p class="l-en">Size, smoothing, depth of field and camera effects come from the same Render window. A progress line appears on the timeline; <em>Stop the animation render</em> cancels it.</p>
+  <p class="l-ru">Размер, сглаживание, глубина резкости и эффекты камеры берутся из того же окна рендера. На таймлайне появляется строка прогресса; <em>Stop the animation render</em> отменяет рендер.</p>
+  <h2><span class="l-en">Making an MP4</span><span class="l-ru">Как получить MP4</span></h2>
+  <p class="l-en">Garry's Mod cannot write MP4 itself. After the render the console prints a ready <a href="https://ffmpeg.org">ffmpeg</a> command. For an AVI:</p>
+  <p class="l-ru">Garry's Mod не умеет записывать MP4 сам. После рендера в консоли печатается готовая команда <a href="https://ffmpeg.org">ffmpeg</a>. Для AVI:</p>
+  <pre>ffmpeg -i myclip.avi -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a aac myclip.mp4</pre>
+  <p class="l-en">For JPEG frames (24 fps):</p>
+  <p class="l-ru">Для кадров JPEG (24 кадра/с):</p>
+  <pre>ffmpeg -framerate 24 -i myclip_%04d.jpg -i myclip.wav -pix_fmt yuv420p myclip.mp4</pre>
+  <div class="warn l-en"><p>Keep the game window focused while an animation renders: unfocused, the game runs at about 20 FPS, which slows the render and can skip very short effects.</p></div>
+  <div class="warn l-ru"><p>Держите окно игры в фокусе во время рендера анимации: без фокуса игра идёт примерно на 20 FPS, это замедляет рендер и может пропустить очень короткие эффекты.</p></div>
+</section>
+
+<!-- ============================================================ SCENES -->
+<section class="page" id="pg-scenes" data-group="files" data-en="Scenes, poses, undo" data-ru="Сцены, позы, отмена">
+  <h1><span class="l-en">Scenes, poses and undo</span><span class="l-ru">Сцены, позы и отмена</span></h1>
+  <p class="lede l-en">The Scene tab of the bottom window keeps your work between sessions.</p>
+  <p class="lede l-ru">Вкладка Scene нижнего окна хранит вашу работу между сессиями.</p>
+  <figure><img src="img/01_overview.jpg" alt="Scene tab with the scene list and the pose library"><figcaption class="l-en"><b>Bottom window, Scene tab:</b> the scene list on the left, the pose library on the right.</figcaption><figcaption class="l-ru"><b>Нижнее окно, вкладка Scene:</b> слева список сцен, справа библиотека поз.</figcaption></figure>
+  <h2><span class="l-en">Scenes</span><span class="l-ru">Сцены</span></h2>
+  <ul class="l-en">
+    <li><strong>Save Scene</strong> asks for a name. <strong>Load</strong> replaces the current scene (asks first). <strong>Delete</strong> removes the file. The refresh button rereads the list.</li>
+    <li>A scene keeps: every object with its pose, face, appearance and attachments; light settings; camera settings and camera effects; the work camera; the frame settings (aspect, size, exposure, depth of field); the SAeditor animation and sounds; data of other mods.</li>
+    <li>The map is recorded too. Loading on another map warns you: coordinates would put objects in random places.</li>
+    <li><strong>Autosave scene (every 2.5 min)</strong>: <code>autosave</code> is the newest copy, <code>autosave_2</code>… are older ones.</li>
+    <li><code>shootout_construct</code> is an example that comes with the addon; it cannot be deleted.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Save Scene</strong> спрашивает имя. <strong>Load</strong> заменяет текущую сцену (с подтверждением). <strong>Delete</strong> удаляет файл. Кнопка обновления перечитывает список.</li>
+    <li>Сцена хранит: все объекты с позами, мимикой, внешним видом и привязками; настройки света; настройки и эффекты камер; рабочую камеру; настройки кадра (пропорции, размер, экспозиция, глубина резкости); анимацию и звуки SAeditor; данные других модов.</li>
+    <li>Записывается и карта. При загрузке на другой карте будет предупреждение: объекты окажутся в случайных местах.</li>
+    <li><strong>Autosave scene (every 2.5 min)</strong>: <code>autosave</code> — самая новая копия, <code>autosave_2</code>… — более старые.</li>
+    <li><code>shootout_construct</code> — пример, который идёт с аддоном; удалить его нельзя.</li>
+  </ul>
+  <h2><span class="l-en">Undo and redo</span><span class="l-ru">Отмена и повтор</span></h2>
+  <p class="l-en"><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> work for every edit: moving, posing, face, lights, cameras, appearance, attaching, keys and sounds of SAeditor, even deleting objects (a deleted object waits in a trash until the history forgets it).</p>
+  <p class="l-ru"><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> работают для любого изменения: перемещение, позы, мимика, свет, камеры, внешний вид, привязки, ключи и звуки SAeditor, даже удаление объектов (удалённый объект ждёт в корзине, пока история его помнит).</p>
+</section>
+
+<!-- ============================================================ THEMES -->
+<section class="page" id="pg-themes" data-group="files" data-en="Themes and notifications" data-ru="Темы и уведомления">
+  <h1><span class="l-en">Themes and notifications</span><span class="l-ru">Темы и уведомления</span></h1>
+  <h2><span class="l-en">Interface themes</span><span class="l-ru">Темы интерфейса</span></h2>
+  <p class="l-en"><span class="ui">View → Interface Theme</span> or Q menu → SPeditor → <strong>Theme</strong>. Changing the theme keeps open windows, the selected camera and fullbright. The editor uses only its own copies of the skins, so interface addons from the Workshop cannot break it.</p>
+  <p class="l-ru"><span class="ui">View → Interface Theme</span> или меню Q → SPeditor → <strong>Theme</strong>. Смена темы сохраняет открытые окна, выбранную камеру и fullbright. Редактор использует только свои копии скинов, поэтому аддоны интерфейса из Workshop не могут его сломать.</p>
+  <figure class="fit"><img src="img/33_menu_theme.jpg" alt="View → Interface Theme" style="--w:380px"></figure>
+  <div class="themes">
+    <figure><img src="img/theme_speditor.jpg" alt="Speditor UI"><figcaption>Speditor UI</figcaption></figure>
+    <figure><img src="img/theme_gmod.jpg" alt="GMod"><figcaption>GMod</figcaption></figure>
+    <figure><img src="img/theme_darkui.jpg" alt="Dark UI"><figcaption>Dark UI</figcaption></figure>
+    <figure><img src="img/theme_steam2004.jpg" alt="Steam 2004"><figcaption>Steam 2004</figcaption></figure>
+    <figure><img src="img/theme_gmod98.jpg" alt="GMod 98"><figcaption>GMod 98</figcaption></figure>
+    <figure><img src="img/theme_oneshot.jpg" alt="OneShot UI"><figcaption>OneShot UI</figcaption></figure>
+    <figure><img src="img/theme_lambdaui.jpg" alt="Lambda UI"><figcaption>Lambda UI</figcaption></figure>
+    <figure><img src="img/theme_ecoui_ecoui_remaster.jpg" alt="EcoUI"><figcaption class="l-en">EcoUI (16 colour variants)</figcaption><figcaption class="l-ru">EcoUI (16 цветовых вариантов)</figcaption></figure>
+  </div>
+  <p class="l-en">There is also <em>Dark UI (Transparent)</em>. Your own Derma skin: put it as a folder into <code>garrysmod/addons/speditor/themes/</code> (create the folder if it is missing; a Lua file with <code>derma.DefineSkin</code>) and use <em>Rescan themes folder</em>.</p>
+  <p class="l-ru">Есть ещё <em>Dark UI (Transparent)</em>. Свой скин Derma: положите его папкой в <code>garrysmod/addons/speditor/themes/</code> (создайте папку, если её нет; Lua-файл с <code>derma.DefineSkin</code>) и нажмите <em>Rescan themes folder</em>.</p>
+  <h2><span class="l-en">Notifications</span><span class="l-ru">Уведомления</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/31_toasts.jpg" alt="Notification cards" style="--w:400px"></figure>
+    <p class="l-en" style="flex:1 1 280px">Saves, autosaves, renders, errors and hints appear as cards in the bottom right corner. <span class="ui">Windows → Notifications</span>: show pop-ups, sound, display time, the <em>Message log</em> with every message of the session, and a test message.</p>
+    <p class="l-ru" style="flex:1 1 280px">Сохранения, автосохранения, рендеры, ошибки и подсказки появляются карточками в правом нижнем углу. <span class="ui">Windows → Notifications</span>: показывать всплывающие сообщения, звук, время показа, <em>Message log</em> со всеми сообщениями сессии и тестовое сообщение.</p>
+  </div>
+  <h2><span class="l-en">About</span><span class="l-ru">О программе</span></h2>
+  <div class="row">
+    <figure class="fit"><img src="img/27_about.jpg" alt="About SPeditor" style="--w:420px"></figure>
+    <p class="l-en" style="flex:1 1 260px"><span class="ui">Help → About SPeditor</span>: the version, what is new in it, the list of features and the authors of the bundled skins (click a name to open its Workshop page, right-click to copy the link).</p>
+    <p class="l-ru" style="flex:1 1 260px"><span class="ui">Help → About SPeditor</span>: версия, что в ней нового, список возможностей и авторы встроенных скинов (щелчок по имени открывает страницу в Workshop, правый щелчок копирует ссылку).</p>
+  </div>
+</section>
+
+<!-- ============================================================ MODS -->
+<section class="page" id="pg-mods" data-group="files" data-en="Mods" data-ru="Моды">
+  <h1><span class="l-en">Mods</span><span class="l-ru">Моды</span></h1>
+  <p class="lede l-en">A mod adds tools to SPeditor: pages in the editor windows, menu items, hotkeys, its own network messages and its own data in scene files. SAeditor itself is a mod and the working example.</p>
+  <p class="lede l-ru">Мод добавляет в SPeditor инструменты: страницы в окнах редактора, пункты меню, горячие клавиши, свои сетевые сообщения и свои данные в файлах сцен. Сам SAeditor — мод и рабочий пример.</p>
+  <div class="row">
+    <figure class="fit"><img src="img/25_mods.jpg" alt="Mods window" style="--w:520px"></figure>
+    <div style="flex:1 1 260px;min-width:0">
+      <p class="l-en"><span class="ui">Windows → Mods</span> lists installed mods with their state (on, off, error, needs a newer SPeditor), author and folder. Untick <em>Enabled</em> to switch a mod off (applied after the map restarts).</p>
+      <p class="l-ru"><span class="ui">Windows → Mods</span> показывает установленные моды с состоянием (on, off, error, needs a newer SPeditor), автором и папкой. Снимите <em>Enabled</em>, чтобы выключить мод (действует после перезапуска карты).</p>
+    </div>
+  </div>
+  <h2><span class="l-en">For mod authors</span><span class="l-ru">Для авторов модов</span></h2>
+  <ol class="steps l-en">
+    <li>A mod is a folder <code>lua/speditor_mods/&lt;id&gt;/</code> with a <code>mod.lua</code>, inside SPeditor or inside any other addon.</li>
+    <li><strong>Save the guide</strong> writes the full guide with examples to <code>garrysmod/data/speditor/</code> (console: <code>speditor_mod_guide</code>).</li>
+    <li>Type an id (Latin letters, digits and <code>_</code>, not starting with a digit) and press <strong>Write a mod template</strong> (console: <code>speditor_mod_template &lt;id&gt;</code>) for a ready skeleton to start from.</li>
+  </ol>
+  <ol class="steps l-ru">
+    <li>Мод — папка <code>lua/speditor_mods/&lt;id&gt;/</code> с файлом <code>mod.lua</code> внутри SPeditor или любого другого аддона.</li>
+    <li><strong>Save the guide</strong> записывает полное руководство с примерами в <code>garrysmod/data/speditor/</code> (консоль: <code>speditor_mod_guide</code>).</li>
+    <li>Введите id (латинские буквы, цифры и <code>_</code>, не с цифры) и нажмите <strong>Write a mod template</strong> (консоль: <code>speditor_mod_template &lt;id&gt;</code>) — получите готовую заготовку.</li>
+  </ol>
+</section>
+
+<!-- ============================================================ HOTKEYS -->
+<section class="page" id="pg-hotkeys" data-group="ref" data-en="Hotkeys" data-ru="Горячие клавиши">
+  <h1><span class="l-en">Hotkeys</span><span class="l-ru">Горячие клавиши</span></h1>
+  <p class="lede l-en">The same list is in the editor: <span class="ui">Help → Hotkeys</span>. Mods add their keys to it.</p>
+  <p class="lede l-ru">Тот же список есть в редакторе: <span class="ui">Help → Hotkeys</span>. Моды добавляют туда свои клавиши.</p>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Key</span><span class="l-ru">Клавиша</span></th><th><span class="l-en">Action</span><span class="l-ru">Действие</span></th></tr>
+    <tr><th colspan="2"><span class="l-en">Selection and camera</span><span class="l-ru">Выделение и камера</span></th></tr>
+    <tr><td><kbd>LMB</kbd></td><td class="wrap"><span class="l-en">Select object / bone</span><span class="l-ru">Выделить объект / кость</span></td></tr>
+    <tr><td><kbd>Ctrl</kbd> + <kbd>LMB</kbd></td><td class="wrap"><span class="l-en">Add to / remove from selection</span><span class="l-ru">Добавить к выделению / убрать</span></td></tr>
+    <tr><td><kbd>RMB</kbd> <span class="l-en">(short click)</span><span class="l-ru">(короткий щелчок)</span></td><td class="wrap"><span class="l-en">Object menu</span><span class="l-ru">Меню объекта</span></td></tr>
+    <tr><td><kbd>RMB</kbd> + <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / <kbd>Q</kbd><kbd>E</kbd></td><td class="wrap"><span class="l-en">Fly the work camera (Q down, E up, Shift faster, Ctrl slower)</span><span class="l-ru">Полёт рабочей камеры (Q вниз, E вверх, Shift быстрее, Ctrl медленнее)</span></td></tr>
+    <tr><td><kbd>Alt</kbd> + <kbd>LMB</kbd></td><td class="wrap"><span class="l-en">Orbit around the selection</span><span class="l-ru">Облёт вокруг выделения</span></td></tr>
+    <tr><td><span class="l-en">Wheel</span><span class="l-ru">Колесо</span></td><td class="wrap"><span class="l-en">Move the camera in / out</span><span class="l-ru">Камера вперёд / назад</span></td></tr>
+    <tr><td><kbd>Alt</kbd> + <span class="l-en">Wheel</span><span class="l-ru">колесо</span></td><td class="wrap"><span class="l-en">Field of view (zoom lens)</span><span class="l-ru">Угол обзора (зум)</span></td></tr>
+    <tr><td><kbd>F</kbd></td><td class="wrap"><span class="l-en">Focus on selection</span><span class="l-ru">Навести на выделение</span></td></tr>
+    <tr><td><kbd>V</kbd></td><td class="wrap"><span class="l-en">Look through the selected camera / back</span><span class="l-ru">Смотреть через выделенную камеру / назад</span></td></tr>
+    <tr><td><kbd>B</kbd></td><td class="wrap"><span class="l-en">Show / hide skeleton</span><span class="l-ru">Показать / скрыть скелет</span></td></tr>
+    <tr><th colspan="2"><span class="l-en">Tools</span><span class="l-ru">Инструменты</span></th></tr>
+    <tr><td><kbd>1</kbd> / <kbd>2</kbd> / <kbd>4</kbd></td><td class="wrap"><span class="l-en">Move / rotate / scale</span><span class="l-ru">Перемещение / вращение / масштаб</span></td></tr>
+    <tr><td><kbd>3</kbd></td><td class="wrap"><span class="l-en">World / local axes</span><span class="l-ru">Мировые / локальные оси</span></td></tr>
+    <tr><td><kbd>I</kbd></td><td class="wrap"><span class="l-en">Inverse kinematics</span><span class="l-ru">Инверсная кинематика</span></td></tr>
+    <tr><td><kbd>Shift</kbd> + <span class="l-en">drag</span><span class="l-ru">тянуть</span></td><td class="wrap"><span class="l-en">Fine slider drag (Ctrl: coarse)</span><span class="l-ru">Точное перетаскивание слайдера (Ctrl — грубое)</span></td></tr>
+    <tr><th colspan="2"><span class="l-en">Editing</span><span class="l-ru">Редактирование</span></th></tr>
+    <tr><td><kbd>Ctrl</kbd> + <kbd>Z</kbd> / <kbd>Ctrl</kbd> + <kbd>Y</kbd></td><td class="wrap"><span class="l-en">Undo / redo</span><span class="l-ru">Отменить / повторить</span></td></tr>
+    <tr><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td class="wrap"><span class="l-en">Duplicate</span><span class="l-ru">Дублировать</span></td></tr>
+    <tr><td><kbd>Del</kbd></td><td class="wrap"><span class="l-en">Delete</span><span class="l-ru">Удалить</span></td></tr>
+    <tr><td><kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>Ctrl</kbd> + <kbd>V</kbd></td><td class="wrap"><span class="l-en">Copy / paste pose</span><span class="l-ru">Копировать / вставить позу</span></td></tr>
+    <tr><th colspan="2"><span class="l-en">Windows</span><span class="l-ru">Окна</span></th></tr>
+    <tr><td><span class="l-en">Drag tab bar</span><span class="l-ru">Тянуть строку вкладок</span></td><td class="wrap"><span class="l-en">Dock: drop on a window edge / tab bar (Ctrl: keep floating)</span><span class="l-ru">Пристыковать: на край окна / строку вкладок (Ctrl — оставить плавающим)</span></td></tr>
+    <tr><td><span class="l-en">Double-click tab bar</span><span class="l-ru">Двойной щелчок по вкладкам</span></td><td class="wrap"><span class="l-en">Maximize / restore window</span><span class="l-ru">Развернуть / вернуть окно</span></td></tr>
+    <tr><td><span class="l-en">Right-click tab bar</span><span class="l-ru">Правый щелчок по вкладкам</span></td><td class="wrap"><span class="l-en">Window properties</span><span class="l-ru">Свойства окна</span></td></tr>
+    <tr><th colspan="2">SAeditor</th></tr>
+    <tr><td><kbd>Space</kbd></td><td class="wrap"><span class="l-en">Play / pause the animation</span><span class="l-ru">Воспроизвести / пауза</span></td></tr>
+    <tr><td><kbd>K</kbd></td><td class="wrap"><span class="l-en">Set a key for the selection</span><span class="l-ru">Ключ для выделения</span></td></tr>
+    <tr><td><kbd>,</kbd> / <kbd>.</kbd></td><td class="wrap"><span class="l-en">Previous / next frame</span><span class="l-ru">Предыдущий / следующий кадр</span></td></tr>
+    <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td class="wrap"><span class="l-en">First / last frame</span><span class="l-ru">Первый / последний кадр</span></td></tr>
+  </table></div>
+  <figure class="mid"><img src="img/26_hotkeys.jpg" alt="Hotkeys window"><figcaption class="l-en"><b>Help → Hotkeys</b> in the editor.</figcaption><figcaption class="l-ru"><b>Help → Hotkeys</b> в редакторе.</figcaption></figure>
+</section>
+
+<!-- ============================================================ COMMANDS -->
+<section class="page" id="pg-commands" data-group="ref" data-en="Console commands" data-ru="Консольные команды">
+  <h1><span class="l-en">Console commands and settings</span><span class="l-ru">Консольные команды и настройки</span></h1>
+  <p class="lede l-en">Everything here can also be set in the interface; the console is useful for binds and for server owners.</p>
+  <p class="lede l-ru">Всё это можно задать и в интерфейсе; консоль удобна для биндов и владельцам серверов.</p>
+  <h2><span class="l-en">Commands</span><span class="l-ru">Команды</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Command</span><span class="l-ru">Команда</span></th><th><span class="l-en">Action</span><span class="l-ru">Действие</span></th></tr>
+    <tr><td><code>speditor_toggle</code></td><td class="wrap"><span class="l-en">Open or close the editor</span><span class="l-ru">Открыть или закрыть редактор</span></td></tr>
+    <tr><td><code>speditor_render</code></td><td class="wrap"><span class="l-en">Render with the current settings</span><span class="l-ru">Рендер с текущими настройками</span></td></tr>
+    <tr><td><code>speditor_mod_guide</code></td><td class="wrap"><span class="l-en">Save the mod guide to data/speditor</span><span class="l-ru">Сохранить руководство по модам в data/speditor</span></td></tr>
+    <tr><td><code>speditor_mod_template &lt;id&gt;</code></td><td class="wrap"><span class="l-en">Write a mod template</span><span class="l-ru">Записать заготовку мода</span></td></tr>
+  </table></div>
+  <h2><span class="l-en">Settings (convars)</span><span class="l-ru">Настройки (convars)</span></h2>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Variable</span><span class="l-ru">Переменная</span></th><th><span class="l-en">Meaning</span><span class="l-ru">Значение</span></th></tr>
+    <tr><td><code>speditor_access</code></td><td class="wrap"><span class="l-en">Server: <code>admin</code> | <code>superadmin</code> | <code>all</code></span><span class="l-ru">Сервер: <code>admin</code> | <code>superadmin</code> | <code>all</code></span></td></tr>
+    <tr><td><code>speditor_language</code></td><td class="wrap"><code>en</code> | <code>ru</code></td></tr>
+    <tr><td><code>speditor_theme</code></td><td class="wrap"><span class="l-en">Interface theme id (speditor, gmod, darkui, steam2004, gmod98, oneshot, lambdaui, ecoui_…)</span><span class="l-ru">Id темы (speditor, gmod, darkui, steam2004, gmod98, oneshot, lambdaui, ecoui_…)</span></td></tr>
+    <tr><td><code>speditor_autosave</code></td><td class="wrap"><span class="l-en">Autosave every 2.5 minutes (0/1)</span><span class="l-ru">Автосохранение каждые 2,5 минуты (0/1)</span></td></tr>
+    <tr><td><code>speditor_aspect</code></td><td class="wrap"><span class="l-en">Frame aspect</span><span class="l-ru">Пропорции кадра</span></td></tr>
+    <tr><td><code>speditor_render_side</code> · <code>_custom</code> · <code>_w</code> · <code>_h</code></td><td class="wrap"><span class="l-en">Render size: the long side, or custom width and height</span><span class="l-ru">Размер рендера: длинная сторона или своя ширина и высота</span></td></tr>
+    <tr><td><code>speditor_render_format</code> · <code>_quality</code></td><td class="wrap"><span class="l-en">png / jpeg, JPEG quality</span><span class="l-ru">png / jpeg, качество JPEG</span></td></tr>
+    <tr><td><code>speditor_render_ss</code> · <code>_fullbright</code> · <code>_preview</code></td><td class="wrap"><span class="l-en">2× smoothing, fullbright render, live preview</span><span class="l-ru">2× сглаживание, рендер без света, живое превью</span></td></tr>
+    <tr><td><code>speditor_render_engine</code></td><td class="wrap">Engine frame (0/1)</td></tr>
+    <tr><td><code>speditor_dof</code> · <code>_aperture</code> · <code>_samples</code></td><td class="wrap"><span class="l-en">Depth of field, blur amount, passes</span><span class="l-ru">Глубина резкости, размытие, проходы</span></td></tr>
+    <tr><td><code>speditor_softlight_samples</code></td><td class="wrap"><span class="l-en">Passes for soft shadows</span><span class="l-ru">Проходы мягких теней</span></td></tr>
+    <tr><td><code>speditor_exposure</code></td><td class="wrap"><span class="l-en">Viewport exposure (0 = auto)</span><span class="l-ru">Экспозиция вьюпортов (0 = авто)</span></td></tr>
+    <tr><td><code>speditor_guides</code> · <code>speditor_bone_size</code></td><td class="wrap"><span class="l-en">Frame guides, bone marker size</span><span class="l-ru">Сетки кадра, размер маркеров костей</span></td></tr>
+    <tr><td><code>speditor_cam_speed</code> · <code>_wheel</code> · <code>_wheel_smooth</code> · <code>_fov</code></td><td class="wrap"><span class="l-en">Work camera settings</span><span class="l-ru">Настройки рабочей камеры</span></td></tr>
+    <tr><td><code>speditor_shadows</code> · <code>speditor_shadow_quality</code> · <code>_max</code> · <code>_dist</code> · <code>_softscale</code> · <code>_slope</code></td><td class="wrap"><span class="l-en">The Shadows tab</span><span class="l-ru">Вкладка Shadows</span></td></tr>
+    <tr><td><code>speditor_mapshadow*</code></td><td class="wrap"><span class="l-en">Map prop shadows: override, length, colour, pitch, yaw, off</span><span class="l-ru">Тени пропов карты: замена, длина, цвет, наклон, направление, выкл.</span></td></tr>
+    <tr><td><code>speditor_notify</code> · <code>_sound</code> · <code>_time</code></td><td class="wrap"><span class="l-en">Notifications</span><span class="l-ru">Уведомления</span></td></tr>
+    <tr><td><code>speditor_mods_off</code></td><td class="wrap"><span class="l-en">Mods switched off</span><span class="l-ru">Выключенные моды</span></td></tr>
+    <tr><td><code>saeditor_render_mode</code> · <code>_format</code> · <code>_quality</code> · <code>_samples</code> · <code>_settle</code></td><td class="wrap"><span class="l-en">Animation render: whole / frame, avi / jpeg / png, video size, passes, longest wait for the scene</span><span class="l-ru">Рендер анимации: вся / кадр, avi / jpeg / png, размер видео, проходы, максимальное ожидание сцены</span></td></tr>
+  </table></div>
+</section>
+
+<!-- ============================================================ FAQ -->
+<section class="page" id="pg-faq" data-group="ref" data-en="Problems and answers" data-ru="Проблемы и ответы">
+  <h1><span class="l-en">Problems and answers</span><span class="l-ru">Проблемы и ответы</span></h1>
+  <p class="lede l-en">Collected from the questions players ask in the Workshop comments.</p>
+  <p class="lede l-ru">Собрано из вопросов игроков в комментариях Workshop.</p>
+
+  <h3><span class="l-en">The interface is huge / windows overlap on my screen</span><span class="l-ru">Интерфейс огромный / окна налезают друг на друга</span></h3>
+  <p class="l-en">On screens narrower than ~1430 px the default layout of a0.3 broke. Fixed in a0.4. Until then: <span class="ui">Windows → Layout → No bottom panel</span> or arrange the windows yourself and <em>Save layout as…</em>.</p>
+  <p class="l-ru">На экранах уже ~1430 px стандартная раскладка a0.3 ломалась. Исправлено в a0.4. До тех пор: <span class="ui">Windows → Layout → No bottom panel</span> или расставьте окна сами и сохраните через <em>Save layout as…</em>.</p>
+
+  <h3><span class="l-en">Clothes I attach do not move with the model</span><span class="l-ru">Прикреплённая одежда не двигается с моделью</span></h3>
+  <p class="l-en">Use <span class="ui">Attach to… → character → Wear</span> (a0.4). Attaching to a bone is rigid by design: good for weapons, not for clothing. See <a href="#attach">Attaching and wearing</a>.</p>
+  <p class="l-ru">Используйте <span class="ui">Attach to… → персонаж → Wear</span> (a0.4). Привязка к кости жёсткая по замыслу: для оружия, а не одежды. См. <a href="#attach">Привязка и одежда</a>.</p>
+
+  <h3><span class="l-en">How do I resize a bone (a bigger hand or head)?</span><span class="l-ru">Как изменить размер кости (больше кисть или голова)?</span></h3>
+  <p class="l-en">Select the bone, press <kbd>4</kbd> and drag the centre (even) or an axis (stretch). In a0.3 this works on fingers and clavicles; a0.4 allows every bone. See <a href="#posing">Posing</a>.</p>
+  <p class="l-ru">Выделите кость, нажмите <kbd>4</kbd> и тяните центр (равномерно) или ось (растяжение). В a0.3 это работает на пальцах и ключицах; в a0.4 — на любой кости. См. <a href="#posing">Позы</a>.</p>
+
+  <h3><span class="l-en">Can I pose bones without the physgun?</span><span class="l-ru">Можно позировать кости без физгана?</span></h3>
+  <p class="l-en">Yes, that is what the editor is for: click a bone marker and use the gizmo, or turn on IK (<kbd>I</kbd>) and drag a hand or foot.</p>
+  <p class="l-ru">Да, для этого редактор и сделан: щёлкните по маркеру кости и используйте гизмо или включите IK (<kbd>I</kbd>) и тяните кисть или стопу.</p>
+
+  <h3><span class="l-en">Imported animation has no finger movement</span><span class="l-ru">В импортированной анимации не двигаются пальцы</span></h3>
+  <p class="l-en">Fixed in a0.4: fingers are imported as bone offsets. Re-import the animation after updating.</p>
+  <p class="l-ru">Исправлено в a0.4: пальцы импортируются как смещения костей. После обновления импортируйте анимацию заново.</p>
+
+  <h3><span class="l-en">Limbs cannot be moved / snap back</span><span class="l-ru">Конечности не двигаются / возвращаются назад</span></h3>
+  <p class="l-en">Usually an addon that controls ragdolls (active ragdolls, Fedhoria and similar). Disable it while you use the editor.</p>
+  <p class="l-ru">Обычно это аддон, управляющий рэгдоллами (активные рэгдоллы, Fedhoria и подобные). Отключите его на время работы в редакторе.</p>
+
+  <h3><span class="l-en">Do custom models and Workshop ragdolls work?</span><span class="l-ru">Работают ли свои модели и рэгдоллы из Workshop?</span></h3>
+  <p class="l-en">Yes, since the first alpha. Find them in the Model Browser or type the path into <em>Spawn by path</em>. Models made as SFM “ragdolls” but ported as props can still be posed bone by bone with the gizmo.</p>
+  <p class="l-ru">Да, с первой альфы. Найдите их в браузере моделей или введите путь в <em>Spawn by path</em>. Модели, сделанные как «рэгдоллы» SFM, но перенесённые как пропы, всё равно можно позировать по костям гизмо.</p>
+
+  <h3><span class="l-en">Where are my scenes and renders?</span><span class="l-ru">Где мои сцены и рендеры?</span></h3>
+  <p class="l-en">In <code>garrysmod/data/speditor/</code>. See <a href="#install">Where your files are</a>.</p>
+  <p class="l-ru">В <code>garrysmod/data/speditor/</code>. См. <a href="#install">Где лежат ваши файлы</a>.</p>
+
+  <h3><span class="l-en">Can I save the animation as a video?</span><span class="l-ru">Можно сохранить анимацию как видео?</span></h3>
+  <p class="l-en">Yes: Render window → <em>The whole animation</em> → <em>AVI video</em>. Remove <code>.dat</code> from the file name. For MP4 use the ffmpeg command printed in the console. See <a href="#sa-render">Video</a>.</p>
+  <p class="l-ru">Да: окно рендера → <em>The whole animation</em> → <em>AVI video</em>. Уберите <code>.dat</code> из имени файла. Для MP4 используйте команду ffmpeg из консоли. См. <a href="#sa-render">Видео</a>.</p>
+
+  <h3><span class="l-en">Can I cut a sound?</span><span class="l-ru">Можно обрезать звук?</span></h3>
+  <p class="l-en">Since a0.4: drag the edges of a sound bar or use <em>Cut in two at the playhead</em>. See <a href="#sa-sounds">Sounds</a>.</p>
+  <p class="l-ru">С a0.4: тяните края полосы звука или используйте <em>Разрезать по курсору</em>. См. <a href="#sa-sounds">Звуки</a>.</p>
+
+  <h3><span class="l-en">Can skins and bodygroups change during an animation?</span><span class="l-ru">Могут ли скины и бодигруппы меняться во время анимации?</span></h3>
+  <p class="l-en">Since a0.4 they are part of every key and switch exactly at the key.</p>
+  <p class="l-ru">С a0.4 они входят в каждый ключ и переключаются ровно на ключе.</p>
+
+  <h3><span class="l-en">Does it work with soft lamps?</span><span class="l-ru">Работает ли с soft lamps?</span></h3>
+  <p class="l-en">SPeditor has its own soft lights since a0.2: <em>source size</em> gives a real penumbra in the render, plus edge softness and 19 ready light kinds. See <a href="#lights">Lights</a>.</p>
+  <p class="l-ru">В SPeditor свои мягкие источники с a0.2: <em>source size</em> даёт настоящую полутень в рендере, плюс мягкий край и 19 готовых видов света. См. <a href="#lights">Свет</a>.</p>
+
+  <h3><span class="l-en">My shadows have stripes or float away from objects</span><span class="l-ru">На тенях полосы или они отрываются от объектов</span></h3>
+  <p class="l-en">Stripes: raise <em>shadowDepthBias</em> or <em>shadowSlopeBias</em> of the light. Floating shadow: lower them. Only spot lights cast shadows.</p>
+  <p class="l-ru">Полосы — увеличьте <em>shadowDepthBias</em> или <em>shadowSlopeBias</em> источника. Тень отрывается — уменьшите. Тени отбрасывают только прожекторы.</p>
+
+  <h3><span class="l-en">Workshop shaders do not appear in the render</span><span class="l-ru">Шейдеры из Workshop не видны в рендере</span></h3>
+  <p class="l-en">Tick <em>Engine frame</em> in the Render window and turn the effect on in <span class="ui">Windows → Addon shaders</span>.</p>
+  <p class="l-ru">Отметьте <em>Engine frame</em> в окне рендера и включите эффект в <span class="ui">Windows → Addon shaders</span>.</p>
+
+  <h3><span class="l-en">Is it compatible with Stop Motion Helper, Portal Gun, StormFox?</span><span class="l-ru">Совместим ли со Stop Motion Helper, Portal Gun, StormFox?</span></h3>
+  <p class="l-en">Not tested yet. Please report what you find in the Workshop discussions.</p>
+  <p class="l-ru">Пока не проверялось. Пожалуйста, сообщайте о результатах в обсуждениях Workshop.</p>
+</section>
+
+<!-- ============================================================ CHANGELOG -->
+<section class="page" id="pg-changelog" data-group="ref" data-en="What's new" data-ru="Что нового">
+  <h1><span class="l-en">What's new</span><span class="l-ru">Что нового</span></h1>
+  <h2>a0.4 <span class="badge new">new</span></h2>
+  <p class="l-en">Made from players' feedback in the Workshop comments.</p>
+  <p class="l-ru">Сделано по отзывам игроков в комментариях Workshop.</p>
+  <ul class="l-en">
+    <li><strong>Wear:</strong> clothing, armour and hair made for the same skeleton follow every bone of the character (<a href="#attach">more</a>).</li>
+    <li><strong>Scale any bone:</strong> hands, head, arms — not only fingers (<a href="#posing">more</a>).</li>
+    <li><strong>Fingers in imported animations:</strong> fists clench, hands grip (<a href="#sa-import">more</a>).</li>
+    <li><strong>Skins and bodygroups in animation keys</strong> (<a href="#sa-basics">more</a>).</li>
+    <li><strong>Cutting and trimming sounds</strong> on the timeline, in playback and in the video (<a href="#sa-sounds">more</a>).</li>
+    <li>Fixed: the layout broke on screens narrower than ~1430 px; a saved layout that does not fit is replaced by the default.</li>
+    <li>Fixed: keys in the Edit menu were drawn with a square box.</li>
+  </ul>
+  <ul class="l-ru">
+    <li><strong>Надеть:</strong> одежда, броня и волосы под тот же скелет следуют за каждой костью персонажа (<a href="#attach">подробнее</a>).</li>
+    <li><strong>Масштаб любой кости:</strong> кисти, голова, руки — не только пальцы (<a href="#posing">подробнее</a>).</li>
+    <li><strong>Пальцы в импортированных анимациях:</strong> кулаки сжимаются, руки хватают (<a href="#sa-import">подробнее</a>).</li>
+    <li><strong>Скины и бодигруппы в ключах анимации</strong> (<a href="#sa-basics">подробнее</a>).</li>
+    <li><strong>Разрезание и обрезка звуков</strong> на таймлайне, при воспроизведении и в видео (<a href="#sa-sounds">подробнее</a>).</li>
+    <li>Исправлено: раскладка ломалась на экранах уже ~1430 px; сохранённая раскладка, которая не помещается, заменяется стандартной.</li>
+    <li>Исправлено: клавиши в меню Edit рисовались с квадратиком.</li>
+  </ul>
+  <h2>a0.3</h2>
+  <ul class="l-en">
+    <li>Effects: particle effects of the game and of Workshop addons, frozen at any moment; Emitter and engine effects.</li>
+    <li>Effects in SAeditor: the moment is keyed; “Play the effect from this frame”.</li>
+    <li>Sounds and voices on the timeline; video with sound; faster animation render; five video sizes.</li>
+    <li>Animations from another model with the same skeleton; several characters at once.</li>
+    <li>Camera motion: shake and smoothness. Camera depth of field and exposure as in SFM.</li>
+    <li>Example scene <code>shootout_construct</code>.</li>
+  </ul>
+  <ul class="l-ru">
+    <li>Эффекты: частицы игры и аддонов Workshop, остановленные в любой момент; эффекты Emitter и движка.</li>
+    <li>Эффекты в SAeditor: момент анимируется ключами; «Play the effect from this frame».</li>
+    <li>Звуки и голоса на таймлайне; видео со звуком; ускоренный рендер анимации; пять размеров видео.</li>
+    <li>Анимации другой модели с тем же скелетом; сразу для нескольких персонажей.</li>
+    <li>Движение камеры: тряска и плавность. Глубина резкости и экспозиция камеры как в SFM.</li>
+    <li>Сцена-пример <code>shootout_construct</code>.</li>
+  </ul>
+  <h2>a0.2</h2>
+  <ul class="l-en"><li>Soft light: source size (penumbra), edge softness, glow, visible beam, 19 light kinds, light masks. The mod system and SAeditor.</li></ul>
+  <ul class="l-ru"><li>Мягкий свет: размер источника (полутень), мягкий край, свечение, видимый луч, 19 видов света, маски. Система модов и SAeditor.</li></ul>
+</section>
+
+<!-- ============================================================ CREDITS -->
+<section class="page" id="pg-credits" data-group="ref" data-en="Credits" data-ru="Благодарности">
+  <h1><span class="l-en">Credits</span><span class="l-ru">Благодарности</span></h1>
+  <p class="l-en">SPeditor is made for Garry's Mod (Facepunch Studios). Source Filmmaker is a product of Valve; SPeditor is not affiliated with Valve. The GMod theme is a copy of the standard Derma skin by Garry Newman. The bundled interface skins belong to their authors:</p>
+  <p class="l-ru">SPeditor создан для Garry's Mod (Facepunch Studios). Source Filmmaker — продукт Valve; SPeditor не связан с Valve. Тема GMod — копия стандартного скина Derma от Garry Newman. Встроенные скины интерфейса принадлежат их авторам:</p>
+  <div class="tbl"><table>
+    <tr><th><span class="l-en">Skin</span><span class="l-ru">Скин</span></th><th><span class="l-en">Author</span><span class="l-ru">Автор</span></th></tr>
+    <tr><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3255386124">EcoUI</a></td><td>ELuminumG24</td></tr>
+    <tr><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=888392108">Dark UI Spawnmenu</a></td><td>AquaRex</td></tr>
+    <tr><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3321557660">Steam 2004 Derma Skin</a></td><td>Maks1mDiamond</td></tr>
+    <tr><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2972603323">GMod98 UI Skin</a></td><td>AwesomeGraczGie21</td></tr>
+    <tr><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3659339920">OneShot - UI Skin</a></td><td>Flarky</td></tr>
+    <tr><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2927713362">Lambda UI</a></td><td>晦涩弗里曼</td></tr>
+  </table></div>
+  <p class="l-en">Workshop shader support (Engine frame) was built and tested with <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3542644649">GShader Library</a> by Akabenko. Thanks to everyone who reports bugs and ideas in the <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3817852435">Workshop comments</a>.</p>
+  <p class="l-ru">Поддержка шейдеров Workshop (Engine frame) создана и проверена с <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3542644649">GShader Library</a> от Akabenko. Спасибо всем, кто пишет об ошибках и идеях в <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3817852435">комментариях Workshop</a>.</p>
+</section>
+
+</main>
+</div>
+<div class="zoom" id="zoom" hidden><img alt=""></div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var GROUPS = {
+    start:  { en: "Getting started", ru: "Начало работы" },
+    ui:     { en: "Interface", ru: "Интерфейс" },
+    scene:  { en: "Building a scene", ru: "Сборка сцены" },
+    output: { en: "Output", ru: "Результат" },
+    anim:   { en: "Animation (SAeditor)", ru: "Анимация (SAeditor)" },
+    files:  { en: "Files and settings", ru: "Файлы и настройки" },
+    ref:    { en: "Reference", ru: "Справочник" }
+  };
+  var UI = {
+    search: { en: "Search the wiki…", ru: "Поиск по вики…" },
+    none:   { en: "Nothing found. Try another word.", ru: "Ничего не найдено. Попробуйте другое слово." },
+    prev:   { en: "Previous", ru: "Назад" },
+    next:   { en: "Next", ru: "Далее" },
+    home:   { en: "SPeditor Wiki", ru: "SPeditor Wiki" },
+    ver:    { en: "Describes SPeditor a0.4.", ru: "Описывает SPeditor a0.4." }
+  };
+  var pages = Array.prototype.slice.call(document.querySelectorAll("section.page"));
+  var byId = {};
+  pages.forEach(function (p) { p.dataset.id = p.id.replace(/^pg-/, ""); byId[p.dataset.id] = p; });
+  var rail = document.getElementById("rail");
+  var q = document.getElementById("q");
+  var results = document.getElementById("results");
+
+  // print mode for the PDF: #print-en / #print-ru
+  var printMatch = /^#print-(en|ru)$/.exec(location.hash);
+  var lang = "en";
+  try { lang = localStorage.getItem("speditor-wiki-lang") || ""; } catch (e) { lang = ""; }
+  if (lang !== "en" && lang !== "ru") lang = (navigator.language || "").toLowerCase().indexOf("ru") === 0 ? "ru" : "en";
+  if (printMatch) lang = printMatch[1];
+
+  function t(o) { return o[lang] || o.en; }
+  function title(p) { return p.getAttribute("data-" + lang) || p.getAttribute("data-en"); }
+
+  function buildRail() {
+    var html = "", last = null;
+    pages.forEach(function (p) {
+      var g = p.getAttribute("data-group");
+      if (g !== last) { html += "<h4>" + t(GROUPS[g]) + "</h4>"; last = g; }
+      html += '<a href="#' + p.dataset.id + '" data-id="' + p.dataset.id + '">' + title(p) + "</a>";
+    });
+    html += '<div class="ver">' + t(UI.ver) + "</div>";
+    rail.innerHTML = html;
+  }
+
+  function buildPagers() {
+    pages.forEach(function (p, i) {
+      var old = p.querySelector(".pager"); if (old) old.remove();
+      var crumbs = p.querySelector(".crumbs"); if (crumbs) crumbs.remove();
+      if (p.dataset.id !== "home") {
+        var c = document.createElement("div");
+        c.className = "crumbs";
+        c.innerHTML = '<a href="#home">' + t(UI.home) + "</a> › " + t(GROUPS[p.getAttribute("data-group")]);
+        p.insertBefore(c, p.firstChild);
+      }
+      var nav = document.createElement("nav");
+      nav.className = "pager";
+      var prev = pages[i - 1], next = pages[i + 1];
+      nav.innerHTML = (prev ? '<a href="#' + prev.dataset.id + '"><small>← ' + t(UI.prev) + "</small>" + title(prev) + "</a>" : "") +
+        (next ? '<a class="next" href="#' + next.dataset.id + '"><small>' + t(UI.next) + " →</small>" + title(next) + "</a>" : "");
+      p.appendChild(nav);
+    });
+  }
+
+  function setLang(l, keep) {
+    lang = l;
+    root.setAttribute("data-lang", l);
+    root.setAttribute("lang", l);
+    try { if (!keep) localStorage.setItem("speditor-wiki-lang", l); } catch (e) {}
+    document.getElementById("lang-en").setAttribute("aria-pressed", l === "en");
+    document.getElementById("lang-ru").setAttribute("aria-pressed", l === "ru");
+    q.placeholder = t(UI.search);
+    buildRail();
+    buildPagers();
+    show(current, true);
+    if (q.value) runSearch();
+  }
+
+  var current = "home";
+  function show(id, quiet) {
+    if (!byId[id]) id = "home";
+    current = id;
+    pages.forEach(function (p) { p.classList.toggle("on", p.dataset.id === id); });
+    rail.querySelectorAll("a").forEach(function (a) {
+      if (a.getAttribute("data-id") === id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    document.title = (id === "home" ? "" : title(byId[id]) + " · ") + "SPeditor Wiki";
+    if (!quiet) window.scrollTo(0, 0);
+    rail.classList.remove("open");
+  }
+
+  function route() {
+    var h = location.hash.replace(/^#/, "");
+    if (/^print-/.test(h)) return;
+    show(h || "home");
+  }
+
+  // search: titles first, then page text in the current language
+  function textOf(p) {
+    var clone = p.cloneNode(true);
+    clone.querySelectorAll(lang === "en" ? ".l-ru" : ".l-en").forEach(function (n) { n.remove(); });
+    clone.querySelectorAll(".pager, .crumbs").forEach(function (n) { n.remove(); });
+    return clone.textContent.replace(/\s+/g, " ");
+  }
+  var cache = {};
+  function runSearch() {
+    var s = q.value.trim().toLowerCase();
+    if (s.length < 2) { results.hidden = true; return; }
+    var hits = [];
+    pages.forEach(function (p) {
+      var key = p.dataset.id + lang;
+      var txt = cache[key] || (cache[key] = textOf(p));
+      var ttl = title(p).toLowerCase();
+      var low = txt.toLowerCase();
+      var at = low.indexOf(s);
+      if (ttl.indexOf(s) >= 0 || at >= 0) {
+        var snip = at >= 0 ? txt.substr(Math.max(0, at - 40), 120) : "";
+        hits.push({ p: p, score: (ttl.indexOf(s) >= 0 ? 2 : 0) + (at >= 0 ? 1 : 0), snip: snip });
+      }
+    });
+    hits.sort(function (a, b) { return b.score - a.score; });
+    results.innerHTML = hits.length ? hits.slice(0, 12).map(function (h) {
+      var safe = h.snip.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; });
+      return '<button type="button" data-id="' + h.p.dataset.id + '"><b>' + title(h.p) + "</b><span>…" + safe + "…</span></button>";
+    }).join("") : '<div class="none">' + t(UI.none) + "</div>";
+    results.hidden = false;
+  }
+  q.addEventListener("input", runSearch);
+  q.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { q.value = ""; results.hidden = true; }
+    if (e.key === "Enter") { var b = results.querySelector("button"); if (b) b.click(); }
+  });
+  results.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]");
+    if (!b) return;
+    location.hash = b.getAttribute("data-id");
+    results.hidden = true;
+    q.blur();
+  });
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".search")) results.hidden = true;
+  });
+
+  document.querySelectorAll(".seg button").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
+  });
+  document.getElementById("menuBtn").addEventListener("click", function () { rail.classList.toggle("open"); });
+
+  // click a screenshot to see it full size
+  var zoom = document.getElementById("zoom");
+  document.getElementById("main").addEventListener("click", function (e) {
+    var img = e.target.closest("figure img");
+    if (!img || root.classList.contains("print")) return;
+    zoom.querySelector("img").src = img.src;
+    zoom.querySelector("img").alt = img.alt;
+    zoom.hidden = false;
+  });
+  zoom.addEventListener("click", function () { zoom.hidden = true; });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") zoom.hidden = true; });
+
+  window.addEventListener("hashchange", route);
+
+  root.setAttribute("data-lang", lang);
+  if (printMatch) {
+    root.classList.add("print");
+    document.querySelectorAll("img").forEach(function (i) { i.loading = "eager"; });
+    var toc = document.getElementById("toc");
+    toc.innerHTML = pages.map(function (p) { return "<li>" + title(p) + "</li>"; }).join("");
+  }
+  setLang(lang, true);
+  route();
+})();
+</script>
+
+</html>
